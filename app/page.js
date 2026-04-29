@@ -342,6 +342,10 @@ export default function DondeSumo() {
   const [showVoluntarioModal, setShowVoluntarioModal] = useState(false)
   const [voluntarioData, setVoluntarioData] = useState({ nombre: "", email: "", telefono: "", oferta: [] })
   const [instituciones, setInstituciones] = useState(INSTITUCIONES_MOCK)
+  const [showMenu, setShowMenu] = useState(false)
+  const [showQuienesSomos, setShowQuienesSomos] = useState(false)
+  const [showMensaje, setShowMensaje] = useState(false)
+  const [mensaje, setMensaje] = useState({ nombre: "", email: "", texto: "" })
   const mapRef = useRef(null)
   const mapInstance = useRef(null)
   const markersRef = useRef([])
@@ -562,7 +566,7 @@ export default function DondeSumo() {
               ¿Donde puedo generar cambios? ¿Donde puedo Ayudar?
             </p>
           </div>
-          <div style={{ display: "flex", gap: 6 }}>
+          <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
             {["mapa", "lista"].map(v => (
               <button key={v} onClick={() => setView(v)} style={{
                 padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 600,
@@ -571,8 +575,32 @@ export default function DondeSumo() {
                 color: view === v ? "#0D4F3C" : "white"
               }}>{v === "mapa" ? "🗺️ Mapa" : "📋 Lista"}</button>
             ))}
+            <button onClick={() => setShowMenu(!showMenu)} style={{
+              background: "rgba(255,255,255,0.15)", border: "none", color: "white",
+              borderRadius: 8, padding: "6px 10px", cursor: "pointer", fontSize: 18
+            }}>☰</button>
           </div>
         </div>
+
+        {/* MENÚ DESPLEGABLE */}
+        {showMenu && (
+          <div style={{
+            position: "absolute", top: 60, right: 20, background: "white",
+            borderRadius: 12, boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
+            zIndex: 9000, minWidth: 200, overflow: "hidden"
+          }}>
+            <button onClick={() => { setShowQuienesSomos(true); setShowMenu(false) }} style={{
+              display: "block", width: "100%", padding: "14px 20px", textAlign: "left",
+              background: "none", border: "none", borderBottom: "1px solid #F3F4F6",
+              cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#0D4F3C"
+            }}>👥 Quiénes Somos</button>
+            <button onClick={() => { setShowMensaje(true); setShowMenu(false) }} style={{
+              display: "block", width: "100%", padding: "14px 20px", textAlign: "left",
+              background: "none", border: "none", cursor: "pointer",
+              fontSize: 14, fontWeight: 600, color: "#0D4F3C"
+            }}>✉️ Dejanos tu Mensaje</button>
+          </div>
+        )}
 
         {/* Search */}
         <div style={{ position: "relative", marginBottom: 8 }}>
@@ -783,6 +811,13 @@ export default function DondeSumo() {
                   </label>
                 ))}
               </div>
+              <textarea
+                placeholder="Dejanos tu comentario o mensaje (opcional)"
+                value={voluntarioData.comentario || ""}
+                onChange={e => setVoluntarioData({...voluntarioData, comentario: e.target.value})}
+                rows={3}
+                style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical" }}
+              />
               <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
                 <button type="submit" style={{
                   flex: 1, background: "#0D4F3C", color: "white", border: "none",
@@ -792,6 +827,48 @@ export default function DondeSumo() {
                   flex: 1, background: "#F3F4F6", color: "#374151", border: "none",
                   padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14
                 }}>Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL QUIÉNES SOMOS */}
+      {showQuienesSomos && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10000, padding: 16 }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 28, maxWidth: 500, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+            <h2 style={{ color: "#0D4F3C", margin: "0 0 16px 0", fontSize: 24, fontFamily: "'Playfair Display', serif" }}>👥 Quiénes Somos</h2>
+            <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7, marginBottom: 12 }}>
+              <strong>Agentes de Cambio</strong> es una plataforma comunitaria que conecta ciudadanos con instituciones del Chaco que necesitan ayuda.
+            </p>
+            <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7, marginBottom: 12 }}>
+              Creemos que cada persona tiene algo para dar: tiempo, habilidades, recursos o simplemente presencia. Nuestra misión es hacer visible dónde más se necesita.
+            </p>
+            <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7 }}>
+              🌿 Nacimos en Resistencia, Chaco, con el sueño de escalar a toda Argentina.
+            </p>
+            <button onClick={() => setShowQuienesSomos(false)} style={{ marginTop: 20, background: "#0D4F3C", color: "white", border: "none", padding: "12px 24px", borderRadius: 8, fontWeight: 700, cursor: "pointer", width: "100%" }}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL DEJANOS TU MENSAJE */}
+      {showMensaje && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10000, padding: 16 }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 28, maxWidth: 500, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+            <h2 style={{ color: "#0D4F3C", margin: "0 0 16px 0", fontSize: 24, fontFamily: "'Playfair Display', serif" }}>✉️ Dejanos tu Mensaje</h2>
+            <form onSubmit={e => {
+              e.preventDefault()
+              alert(`✅ ¡Gracias ${mensaje.nombre}! Recibimos tu mensaje.`)
+              setShowMensaje(false)
+              setMensaje({ nombre: "", email: "", texto: "" })
+            }} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <input type="text" placeholder="Tu nombre" required value={mensaje.nombre} onChange={e => setMensaje({...mensaje, nombre: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              <input type="email" placeholder="Tu email" required value={mensaje.email} onChange={e => setMensaje({...mensaje, email: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              <textarea placeholder="Tu mensaje..." required value={mensaje.texto} onChange={e => setMensaje({...mensaje, texto: e.target.value})} rows={4} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical" }} />
+              <div style={{ display: "flex", gap: 8 }}>
+                <button type="submit" style={{ flex: 1, background: "#0D4F3C", color: "white", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Enviar</button>
+                <button type="button" onClick={() => setShowMensaje(false)} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Cancelar</button>
               </div>
             </form>
           </div>
