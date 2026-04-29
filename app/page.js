@@ -212,7 +212,7 @@ const VerificadoBadge = ({ estado }) => {
   )
 }
 
-const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick }) => {
+const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick, onVoluntario }) => {
   const cats = inst.categorias.map(cid => categorias.find(c => c.id === cid)).filter(Boolean)
 
   return (
@@ -310,7 +310,7 @@ const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick }) => {
         )}
 
         <div style={{ display: "flex", gap: 8 }}>
-          <button style={{
+          <button onClick={onVoluntario} style={{
             flex: 1, background: "#0D4F3C", color: "white", border: "none",
             padding: "8px 0", borderRadius: 8, fontSize: 12, fontWeight: 700,
             cursor: "pointer"
@@ -339,6 +339,8 @@ export default function DondeSumo() {
   const [mapReady, setMapReady] = useState(false)
   const [view, setView] = useState("mapa")
   const [showModal, setShowModal] = useState(true)
+  const [showVoluntarioModal, setShowVoluntarioModal] = useState(false)
+  const [voluntarioData, setVoluntarioData] = useState({ nombre: "", email: "", telefono: "", oferta: [] })
   const mapRef = useRef(null)
   const mapInstance = useRef(null)
   const markersRef = useRef([])
@@ -652,6 +654,7 @@ export default function DondeSumo() {
                 <InstitucionCard
                   inst={selectedInst} categorias={CATEGORIAS}
                   onClose={() => setSelectedInst(null)} isPopup={true}
+                  onVoluntario={() => setShowVoluntarioModal(true)}
                 />
               </div>
             )}
@@ -692,6 +695,7 @@ export default function DondeSumo() {
                 <InstitucionCard
                   key={inst.id} inst={inst} categorias={CATEGORIAS} isPopup={false}
                   onClick={() => { setSelectedInst(inst); setView("mapa") }}
+                  onVoluntario={() => { setSelectedInst(inst); setShowVoluntarioModal(true) }}
                 />
               ))
             )}
@@ -707,6 +711,77 @@ export default function DondeSumo() {
         <span style={{ fontWeight: 700, color: "#86EFAC" }}>Agentes de Cambio</span>
         {" · "}Chaco, Argentina{" · "}¿Donde puedo Ayudar? 💚
       </footer>
+
+      {/* MODAL VOLUNTARIOS */}
+      {showVoluntarioModal && (
+        <div style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          zIndex: 10000, padding: 16
+        }}>
+          <div style={{
+            background: "white", borderRadius: 16, padding: 24,
+            maxWidth: 500, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)"
+          }}>
+            <h2 style={{ margin: "0 0 16px 0", color: "#0D4F3C", fontSize: 22 }}>
+              Sumarte a {selectedInst?.nombre}
+            </h2>
+            <form onSubmit={e => {
+              e.preventDefault()
+              alert(`✅ Gracias ${voluntarioData.nombre}! Te contactaremos pronto.`)
+              setShowVoluntarioModal(false)
+              setVoluntarioData({ nombre: "", email: "", telefono: "", oferta: [] })
+            }} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <input
+                type="text" placeholder="Tu nombre" required
+                value={voluntarioData.nombre}
+                onChange={e => setVoluntarioData({...voluntarioData, nombre: e.target.value})}
+                style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }}
+              />
+              <input
+                type="email" placeholder="Tu email" required
+                value={voluntarioData.email}
+                onChange={e => setVoluntarioData({...voluntarioData, email: e.target.value})}
+                style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }}
+              />
+              <input
+                type="tel" placeholder="Tu teléfono"
+                value={voluntarioData.telefono}
+                onChange={e => setVoluntarioData({...voluntarioData, telefono: e.target.value})}
+                style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }}
+              />
+              <div style={{ color: "#6B7280", fontSize: 13, fontWeight: 600 }}>¿Que puedo ofrecer?</div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                {["⏰ Tiempo", "🚗 Transporte", "💼 Habilidad", "🔧 Oficio"].map(opt => (
+                  <label key={opt} style={{ display: "flex", gap: 8, fontSize: 13 }}>
+                    <input
+                      type="checkbox"
+                      checked={voluntarioData.oferta.includes(opt)}
+                      onChange={e => setVoluntarioData({
+                        ...voluntarioData,
+                        oferta: e.target.checked
+                          ? [...voluntarioData.oferta, opt]
+                          : voluntarioData.oferta.filter(o => o !== opt)
+                      })}
+                    />
+                    <span>{opt}</span>
+                  </label>
+                ))}
+              </div>
+              <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                <button type="submit" style={{
+                  flex: 1, background: "#0D4F3C", color: "white", border: "none",
+                  padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14
+                }}>Registrarme</button>
+                <button type="button" onClick={() => setShowVoluntarioModal(false)} style={{
+                  flex: 1, background: "#F3F4F6", color: "#374151", border: "none",
+                  padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14
+                }}>Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
