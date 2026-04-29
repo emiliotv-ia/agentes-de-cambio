@@ -341,32 +341,47 @@ export default function DondeSumo() {
   const [showModal, setShowModal] = useState(true)
   const [showVoluntarioModal, setShowVoluntarioModal] = useState(false)
   const [voluntarioData, setVoluntarioData] = useState({ nombre: "", email: "", telefono: "", oferta: [] })
+  const [instituciones, setInstituciones] = useState(INSTITUCIONES_MOCK)
   const mapRef = useRef(null)
   const mapInstance = useRef(null)
   const markersRef = useRef([])
   const leafletLoaded = useRef(false)
 
+  // Cargar instituciones desde la API
+  useEffect(() => {
+    fetch('/api/instituciones/search')
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.instituciones.length > 0) {
+          // Adaptar campos de Supabase al formato del frontend
+          const adapted = data.instituciones.map(i => ({
+            ...i,
+            lat: parseFloat(i.latitud),
+            lng: parseFloat(i.longitud),
+            categorias: i.categorias || [],
+            tags: i.tags || [],
+            necesidades: i.necesidades_actuales || []
+          }))
+          setInstituciones(adapted)
+        }
+      })
+      .catch(() => {}) // Si falla, usa los mock
+  }, [])
+
   const filtered = useMemo(() => {
-    return INSTITUCIONES_MOCK.filter(inst => {
+    return instituciones.filter(inst => {
       const term = searchTerm.toLowerCase().trim()
       if (term) {
         const matchName = inst.nombre.toLowerCase().includes(term)
-        const matchTags = inst.tags.some(t => t.toLowerCase().includes(term))
-        const matchDesc = inst.descripcion.toLowerCase().includes(term)
-        const matchCat = inst.categorias.some(cid => {
-          const cat = CATEGORIAS.find(c => c.id === cid)
-          return cat && cat.nombre.toLowerCase().includes(term)
-        })
-        const matchLoc = inst.localidad.toLowerCase().includes(term)
-        if (!matchName && !matchTags && !matchDesc && !matchCat && !matchLoc) return false
-      }
-      if (selectedCats.length > 0) {
-        if (!inst.categorias.some(cid => selectedCats.includes(cid))) return false
+        const matchTags = (inst.tags || []).some(t => t.toLowerCase().includes(term))
+        const matchDesc = inst.descripcion?.toLowerCase().includes(term)
+        const matchLoc = inst.localidad?.toLowerCase().includes(term)
+        if (!matchName && !matchTags && !matchDesc && !matchLoc) return false
       }
       if (selectedLocalidad && inst.localidad !== selectedLocalidad) return false
       return true
     })
-  }, [searchTerm, selectedCats, selectedLocalidad])
+  }, [searchTerm, selectedCats, selectedLocalidad, instituciones])
 
   const localidades = useMemo(() =>
     [...new Set(INSTITUCIONES_MOCK.map(i => i.localidad))].sort(), [])
