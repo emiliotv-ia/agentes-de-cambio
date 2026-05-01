@@ -922,13 +922,10 @@ export default function DondeSumo() {
           <div style={{ background: "white", borderRadius: 16, padding: 28, maxWidth: 500, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
             <h2 style={{ color: "#0D4F3C", margin: "0 0 16px 0", fontSize: 24, fontFamily: "'Playfair Display', serif" }}>👥 Quiénes Somos</h2>
             <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7, marginBottom: 12 }}>
-              <strong>Agentes de Cambio</strong> es una plataforma comunitaria que conecta ciudadanos con instituciones del Chaco que necesitan ayuda.
-            </p>
-            <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7, marginBottom: 12 }}>
-              Creemos que cada persona tiene algo para dar: tiempo, habilidades, recursos o simplemente presencia. Nuestra misión es hacer visible dónde más se necesita.
+              Creemos firmemente que cambiar el mundo no es una utopía, sino el resultado de miles de personas haciendo cosas pequeñas en el lugar correcto. Somos una plataforma diseñada para conectar: unimos a ciudadanos con ganas de sumar su "granito de arena" con las instituciones que más los necesitan.
             </p>
             <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7 }}>
-              🌿 Nacimos en Resistencia, Chaco, con el sueño de escalar a toda Argentina.
+              Nacimos en Resistencia con una convicción clara: cada micro-acción cuenta. Queremos que tu intención de ayudar se transforme en un impacto real, eliminando la incertidumbre. Por eso, no solo te mostramos dónde ayudar, sino que certificamos y validamos cada espacio para que tu confianza sea el puente hacia un mundo mejor!
             </p>
             <button onClick={() => setShowQuienesSomos(false)} style={{ marginTop: 20, background: "#0D4F3C", color: "white", border: "none", padding: "12px 24px", borderRadius: 8, fontWeight: 700, cursor: "pointer", width: "100%" }}>Cerrar</button>
           </div>
