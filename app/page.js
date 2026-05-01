@@ -546,6 +546,13 @@ export default function DondeSumo() {
             }}>
               Comenzar a explorar
             </button>
+            <button onClick={() => { setShowModal(false); setShowQuienesSomos(true) }} style={{
+              width: "100%", marginTop: 10, padding: "10px 0", background: "none",
+              border: "none", color: "#0D4F3C", fontSize: 13, fontWeight: 600,
+              cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6
+            }}>
+              ¿Querés saber más de nosotros? <span style={{ fontSize: 16 }}>→</span>
+            </button>
           </div>
         </div>
       )}
