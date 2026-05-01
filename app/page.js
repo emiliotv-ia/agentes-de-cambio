@@ -212,7 +212,7 @@ const VerificadoBadge = ({ estado }) => {
   )
 }
 
-const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick, onVoluntario, onHistoria }) => {
+const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick, onVoluntario, onHistoria, onResena }) => {
   const cats = (inst.categorias || []).map(cid => categorias.find(c => c.id === cid)).filter(Boolean)
 
   return (
@@ -328,6 +328,11 @@ const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick, onVolunt
           border: "1.5px solid #86EFAC", padding: "8px 0", borderRadius: 8,
           fontSize: 12, fontWeight: 700, cursor: "pointer"
         }}>📖 Quiénes somos · Conocé nuestra historia</button>
+        <button onClick={e => { e.stopPropagation(); onResena && onResena() }} style={{
+          width: "100%", marginTop: 6, background: "#FFFBEB", color: "#92400E",
+          border: "1.5px solid #FCD34D", padding: "8px 0", borderRadius: 8,
+          fontSize: 12, fontWeight: 700, cursor: "pointer"
+        }}>⭐ Dejar una reseña</button>
       </div>
     </div>
   )
@@ -353,6 +358,8 @@ export default function DondeSumo() {
   const [mensaje, setMensaje] = useState({ nombre: "", email: "", texto: "" })
   const [showHistoriaModal, setShowHistoriaModal] = useState(false)
   const [instHistoria, setInstHistoria] = useState(null)
+  const [showResenaModal, setShowResenaModal] = useState(false)
+  const [resenaData, setResenaData] = useState({ nombre: "", comentario: "", calificacion: 5 })
   const mapRef = useRef(null)
   const mapInstance = useRef(null)
   const markersRef = useRef([])
@@ -713,6 +720,7 @@ export default function DondeSumo() {
                   onClose={() => setSelectedInst(null)} isPopup={true}
                   onVoluntario={() => setShowVoluntarioModal(true)}
                   onHistoria={() => { setInstHistoria(selectedInst); setShowHistoriaModal(true) }}
+                  onResena={() => setShowResenaModal(true)}
                 />
               </div>
             )}
@@ -755,6 +763,7 @@ export default function DondeSumo() {
                   onClick={() => { setSelectedInst(inst); setView("mapa") }}
                   onVoluntario={() => { setSelectedInst(inst); setShowVoluntarioModal(true) }}
                   onHistoria={() => { setInstHistoria(inst); setShowHistoriaModal(true) }}
+                  onResena={() => { setSelectedInst(inst); setShowResenaModal(true) }}
                 />
               ))
             )}
@@ -857,6 +866,55 @@ export default function DondeSumo() {
                   flex: 1, background: "#F3F4F6", color: "#374151", border: "none",
                   padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14
                 }}>Cancelar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL RESEÑA */}
+      {showResenaModal && selectedInst && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10000, padding: 16 }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 24, maxWidth: 460, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+            <h2 style={{ color: "#0D4F3C", margin: "0 0 4px 0", fontSize: 20 }}>⭐ Dejar reseña</h2>
+            <p style={{ color: "#6B7280", fontSize: 13, margin: "0 0 16px 0" }}>{selectedInst.nombre}</p>
+            <form onSubmit={async e => {
+              e.preventDefault()
+              try {
+                const res = await fetch('/api/resenas', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ ...resenaData, institucion_id: selectedInst.id })
+                })
+                const data = await res.json()
+                if (data.success) {
+                  alert('✅ ¡Gracias por tu reseña!')
+                  setShowResenaModal(false)
+                  setResenaData({ nombre: "", comentario: "", calificacion: 5 })
+                } else {
+                  alert(`❌ Error: ${data.error}`)
+                }
+              } catch (err) {
+                alert('❌ Error: ' + err.message)
+              }
+            }} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <input type="text" placeholder="Tu nombre (opcional)" value={resenaData.nombre} onChange={e => setResenaData({...resenaData, nombre: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              {/* Estrellas */}
+              <div>
+                <div style={{ color: "#6B7280", fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Calificación</div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  {[1,2,3,4,5].map(n => (
+                    <button key={n} type="button" onClick={() => setResenaData({...resenaData, calificacion: n})} style={{
+                      fontSize: 28, background: "none", border: "none", cursor: "pointer",
+                      opacity: n <= resenaData.calificacion ? 1 : 0.3, transition: "opacity 0.1s"
+                    }}>⭐</button>
+                  ))}
+                </div>
+              </div>
+              <textarea placeholder="Contanos tu experiencia..." required value={resenaData.comentario} onChange={e => setResenaData({...resenaData, comentario: e.target.value})} rows={4} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical" }} />
+              <div style={{ display: "flex", gap: 8 }}>
+                <button type="submit" style={{ flex: 1, background: "#0D4F3C", color: "white", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Enviar reseña</button>
+                <button type="button" onClick={() => setShowResenaModal(false)} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Cancelar</button>
               </div>
             </form>
           </div>
