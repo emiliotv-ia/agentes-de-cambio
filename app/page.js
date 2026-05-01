@@ -785,11 +785,25 @@ export default function DondeSumo() {
             <h2 style={{ margin: "0 0 16px 0", color: "#0D4F3C", fontSize: 22 }}>
               Sumarte a {selectedInst?.nombre}
             </h2>
-            <form onSubmit={e => {
+            <form onSubmit={async e => {
               e.preventDefault()
-              alert(`✅ Gracias ${voluntarioData.nombre}! Te contactaremos pronto.`)
-              setShowVoluntarioModal(false)
-              setVoluntarioData({ nombre: "", email: "", telefono: "", oferta: [] })
+              try {
+                const res = await fetch('/api/voluntarios/registro', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ ...voluntarioData, institucion_id: selectedInst?.id })
+                })
+                const data = await res.json()
+                if (data.success) {
+                  alert(`✅ Gracias ${voluntarioData.nombre}! Te contactaremos pronto.`)
+                  setShowVoluntarioModal(false)
+                  setVoluntarioData({ nombre: "", email: "", telefono: "", oferta: [], comentario: "" })
+                } else {
+                  alert(`❌ Error: ${data.error}`)
+                }
+              } catch {
+                alert('❌ Error al enviar. Intentá de nuevo.')
+              }
             }} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <input
                 type="text" placeholder="Tu nombre" required
@@ -944,11 +958,25 @@ export default function DondeSumo() {
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10000, padding: 16 }}>
           <div style={{ background: "white", borderRadius: 16, padding: 28, maxWidth: 500, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
             <h2 style={{ color: "#0D4F3C", margin: "0 0 16px 0", fontSize: 24, fontFamily: "'Playfair Display', serif" }}>✉️ Dejanos tu Mensaje</h2>
-            <form onSubmit={e => {
+            <form onSubmit={async e => {
               e.preventDefault()
-              alert(`✅ ¡Gracias ${mensaje.nombre}! Recibimos tu mensaje.`)
-              setShowMensaje(false)
-              setMensaje({ nombre: "", email: "", texto: "" })
+              try {
+                const res = await fetch('/api/mensajes', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(mensaje)
+                })
+                const data = await res.json()
+                if (data.success) {
+                  alert(`✅ ¡Gracias ${mensaje.nombre}! Recibimos tu mensaje.`)
+                  setShowMensaje(false)
+                  setMensaje({ nombre: "", email: "", texto: "" })
+                } else {
+                  alert(`❌ Error: ${data.error}`)
+                }
+              } catch {
+                alert('❌ Error al enviar. Intentá de nuevo.')
+              }
             }} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <input type="text" placeholder="Tu nombre" required value={mensaje.nombre} onChange={e => setMensaje({...mensaje, nombre: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
               <input type="email" placeholder="Tu email" required value={mensaje.email} onChange={e => setMensaje({...mensaje, email: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
