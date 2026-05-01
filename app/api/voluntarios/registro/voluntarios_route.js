@@ -32,6 +32,6 @@ export async function POST(request) {
 
     return Response.json({ success: true, voluntario: data?.[0] }, { status: 201 })
   } catch (err) {
-    return Response.json({ error: err.message }, { status: 500 })
+    return Response.json({ error: err.message, success: false }, { status: 500 })
   }
 }
