@@ -212,8 +212,8 @@ const VerificadoBadge = ({ estado }) => {
   )
 }
 
-const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick, onVoluntario }) => {
-  const cats = inst.categorias.map(cid => categorias.find(c => c.id === cid)).filter(Boolean)
+const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick, onVoluntario, onHistoria }) => {
+  const cats = (inst.categorias || []).map(cid => categorias.find(c => c.id === cid)).filter(Boolean)
 
   return (
     <div
@@ -323,6 +323,11 @@ const InstitucionCard = ({ inst, categorias, onClose, isPopup, onClick, onVolunt
             }}>🚚 Donar materiales</button>
           )}
         </div>
+        <button onClick={e => { e.stopPropagation(); onHistoria && onHistoria() }} style={{
+          width: "100%", marginTop: 8, background: "#F0FDF4", color: "#0D4F3C",
+          border: "1.5px solid #86EFAC", padding: "8px 0", borderRadius: 8,
+          fontSize: 12, fontWeight: 700, cursor: "pointer"
+        }}>📖 Quiénes somos · Conocé nuestra historia</button>
       </div>
     </div>
   )
@@ -346,6 +351,8 @@ export default function DondeSumo() {
   const [showQuienesSomos, setShowQuienesSomos] = useState(false)
   const [showMensaje, setShowMensaje] = useState(false)
   const [mensaje, setMensaje] = useState({ nombre: "", email: "", texto: "" })
+  const [showHistoriaModal, setShowHistoriaModal] = useState(false)
+  const [instHistoria, setInstHistoria] = useState(null)
   const mapRef = useRef(null)
   const mapInstance = useRef(null)
   const markersRef = useRef([])
@@ -698,6 +705,7 @@ export default function DondeSumo() {
                   inst={selectedInst} categorias={CATEGORIAS}
                   onClose={() => setSelectedInst(null)} isPopup={true}
                   onVoluntario={() => setShowVoluntarioModal(true)}
+                  onHistoria={() => { setInstHistoria(selectedInst); setShowHistoriaModal(true) }}
                 />
               </div>
             )}
@@ -739,6 +747,7 @@ export default function DondeSumo() {
                   key={inst.id} inst={inst} categorias={CATEGORIAS} isPopup={false}
                   onClick={() => { setSelectedInst(inst); setView("mapa") }}
                   onVoluntario={() => { setSelectedInst(inst); setShowVoluntarioModal(true) }}
+                  onHistoria={() => { setInstHistoria(inst); setShowHistoriaModal(true) }}
                 />
               ))
             )}
@@ -829,6 +838,80 @@ export default function DondeSumo() {
                 }}>Cancelar</button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL HISTORIA INSTITUCIÓN */}
+      {showHistoriaModal && instHistoria && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10000, padding: 16 }}>
+          <div style={{ background: "white", borderRadius: 16, maxWidth: 560, width: "100%", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+            {/* Header */}
+            <div style={{ background: "linear-gradient(135deg, #0D4F3C, #2D8B6A)", padding: "20px 24px", borderRadius: "16px 16px 0 0", position: "relative" }}>
+              <button onClick={() => setShowHistoriaModal(false)} style={{ position: "absolute", top: 12, right: 12, background: "rgba(255,255,255,0.2)", border: "none", color: "white", width: 28, height: 28, borderRadius: "50%", cursor: "pointer", fontSize: 16 }}>×</button>
+              <h2 style={{ color: "white", margin: 0, fontSize: 20, fontFamily: "'Playfair Display', serif" }}>{instHistoria.nombre}</h2>
+              <p style={{ color: "rgba(255,255,255,0.8)", margin: "4px 0 0 0", fontSize: 12 }}>📍 {instHistoria.direccion} · {instHistoria.localidad}</p>
+            </div>
+
+            <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 20 }}>
+
+              {/* Descripción */}
+              <div>
+                <h3 style={{ color: "#0D4F3C", fontSize: 14, fontWeight: 700, margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: 1 }}>🏢 Qué hacemos</h3>
+                <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7, margin: 0 }}>{instHistoria.descripcion || "Información no disponible."}</p>
+              </div>
+
+              {/* Historia */}
+              <div>
+                <h3 style={{ color: "#0D4F3C", fontSize: 14, fontWeight: 700, margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: 1 }}>📜 Nuestra Historia</h3>
+                <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7, margin: 0 }}>
+                  {instHistoria.historia || "Esta institución aún no cargó su historia. Si sos parte de ella, ¡contactanos para completar su perfil!"}
+                </p>
+              </div>
+
+              {/* Responsables */}
+              {instHistoria.responsables && (
+                <div>
+                  <h3 style={{ color: "#0D4F3C", fontSize: 14, fontWeight: 700, margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: 1 }}>👥 Responsables</h3>
+                  <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7, margin: 0 }}>{instHistoria.responsables}</p>
+                </div>
+              )}
+
+              {/* A quiénes va dirigido */}
+              {instHistoria.dirigido_a && (
+                <div>
+                  <h3 style={{ color: "#0D4F3C", fontSize: 14, fontWeight: 700, margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: 1 }}>🎯 A quiénes va dirigido</h3>
+                  <p style={{ color: "#374151", fontSize: 14, lineHeight: 1.7, margin: 0 }}>{instHistoria.dirigido_a}</p>
+                </div>
+              )}
+
+              {/* Necesidades actuales */}
+              {instHistoria.necesidades && instHistoria.necesidades.length > 0 && (
+                <div>
+                  <h3 style={{ color: "#0D4F3C", fontSize: 14, fontWeight: 700, margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: 1 }}>🆘 Necesidades Actuales</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    {instHistoria.necesidades.map((n, i) => (
+                      <div key={i} style={{ background: "#F9FAFB", borderRadius: 8, padding: "8px 12px", display: "flex", gap: 8, alignItems: "center", fontSize: 13 }}>
+                        <UrgenciaBadge urgencia={n.urgencia} />
+                        <span style={{ color: "#374151" }}>{n.detalle}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Contacto */}
+              <div style={{ background: "#F0FDF4", borderRadius: 10, padding: "12px 16px" }}>
+                <h3 style={{ color: "#0D4F3C", fontSize: 13, fontWeight: 700, margin: "0 0 8px 0", textTransform: "uppercase", letterSpacing: 1 }}>📞 Contacto</h3>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 13, color: "#374151" }}>
+                  {instHistoria.telefono && <span>📞 {instHistoria.telefono}</span>}
+                  {instHistoria.email && <span>✉️ {instHistoria.email}</span>}
+                  {instHistoria.instagram && <span>📸 {instHistoria.instagram}</span>}
+                </div>
+              </div>
+
+              <button onClick={() => setShowHistoriaModal(false)} style={{ background: "#0D4F3C", color: "white", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Cerrar</button>
+            </div>
           </div>
         </div>
       )}
