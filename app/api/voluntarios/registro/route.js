@@ -20,7 +20,7 @@ export async function POST(request) {
         nombre,
         email,
         telefono: telefono || null,
-        habilidades: Array.isArray(oferta) ? oferta.join(', ') : oferta || null,
+        habilidades: Array.isArray(oferta) ? oferta : [],
         oferta: Array.isArray(oferta) ? oferta.join(', ') : oferta || null,
         comentario: comentario || null,
         institucion_id: institucion_id || null,
