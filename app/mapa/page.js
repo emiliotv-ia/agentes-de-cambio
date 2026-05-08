@@ -613,11 +613,12 @@ export default function DondeSumo() {
             borderRadius: 12, boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
             zIndex: 9000, minWidth: 200, overflow: "hidden"
           }}>
-            <button onClick={() => { setShowQuienesSomos(true); setShowMenu(false) }} style={{
+            <a href="/registrar" onClick={() => setShowMenu(false)} style={{
               display: "block", width: "100%", padding: "14px 20px", textAlign: "left",
               background: "none", border: "none", borderBottom: "1px solid #F3F4F6",
-              cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#0D4F3C"
-            }}>👥 Quiénes Somos</button>
+              cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#0D4F3C",
+              textDecoration: "none"
+            }}>🏢 Agregá tu institución en este mapa</a>
             <button onClick={() => { setShowMensaje(true); setShowMenu(false) }} style={{
               display: "block", width: "100%", padding: "14px 20px", textAlign: "left",
               background: "none", border: "none", cursor: "pointer",
