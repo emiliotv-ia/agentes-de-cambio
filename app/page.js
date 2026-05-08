@@ -20,9 +20,12 @@ export default function LandingPage() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", background: "#F8FAF9", minHeight: "100vh" }}>
 
-      <div style={{ background: "linear-gradient(135deg, #0D4F3C 0%, #1A6B4F 60%, #2D8B6A 100%)", padding: "52px 24px 48px", color: "white", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: -60, right: -60, width: 220, height: 220, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
-        <div style={{ position: "absolute", bottom: -40, left: -40, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
+      <div style={{ position: "relative", color: "white", overflow: "hidden" }}>
+        {/* Imagen de fondo */}
+        <img src="/agentesDcbio_Fondo.jpeg" alt="Agentes de Cambio" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+        {/* Overlay verde */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(135deg, rgba(13,79,60,0.85) 0%, rgba(26,107,79,0.75) 60%, rgba(45,139,106,0.65) 100%)" }} />
+        <div style={{ position: "relative", zIndex: 1, padding: "52px 24px 48px" }}>
         <div style={{ maxWidth: 640, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: 2, opacity: 0.65, marginBottom: 8, textTransform: "uppercase" }}>Resistencia, Chaco · Argentina</div>
           <div style={{ fontSize: 13, opacity: 0.7, marginBottom: 4 }}>Bienvenidos a</div>
@@ -38,6 +41,7 @@ export default function LandingPage() {
           <button onClick={() => setShowQuienesSomos(true)} style={{ background: "rgba(255,255,255,0.15)", color: "white", padding: "13px 28px", borderRadius: 12, fontWeight: 700, fontSize: 14, border: "2px solid rgba(255,255,255,0.4)", cursor: "pointer" }}>
             👥 ¿Quiénes Somos? →
           </button>
+        </div>
         </div>
       </div>
 
