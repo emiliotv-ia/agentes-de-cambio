@@ -42,6 +42,32 @@ export default function LandingPage() {
         </div>
       </div>
 
+      {/* FOTOS - IMPACTO REAL */}
+      <div style={{ maxWidth: 700, margin: "0 auto", padding: "44px 24px 0" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+          <div style={{ width: 4, height: 32, background: "#0D4F3C", borderRadius: 4 }} />
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>El cambio se ve así 💚</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "1", position: "relative" }}>
+            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&q=80" alt="Niños felices" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.6))", padding: "20px 12px 12px", color: "white", fontSize: 12, fontWeight: 600 }}>Niños que sonríen</div>
+          </div>
+          <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "1", position: "relative" }}>
+            <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=400&q=80" alt="Voluntarios" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.6))", padding: "20px 12px 12px", color: "white", fontSize: 12, fontWeight: 600 }}>Voluntarios en acción</div>
+          </div>
+          <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "1", position: "relative" }}>
+            <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=400&q=80" alt="Donaciones" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.6))", padding: "20px 12px 12px", color: "white", fontSize: 12, fontWeight: 600 }}>Donaciones que llegan</div>
+          </div>
+          <div style={{ borderRadius: 16, overflow: "hidden", aspectRatio: "1", position: "relative" }}>
+            <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&q=80" alt="Comunidad" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.6))", padding: "20px 12px 12px", color: "white", fontSize: 12, fontWeight: 600 }}>Comunidad unida</div>
+          </div>
+        </div>
+      </div>
+
       {/* QUÉ PODÉS HACER */}
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "44px 24px 0" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
