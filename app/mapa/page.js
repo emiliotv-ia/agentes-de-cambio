@@ -749,27 +749,64 @@ export default function DondeSumo() {
             padding: 16, overflowY: "auto", height: "100%",
             display: "flex", flexDirection: "column", gap: 12
           }}>
-            {filtered.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "60px 20px", color: "#9CA3AF" }}>
-                <div style={{ fontSize: 48, marginBottom: 12 }}>🏢</div>
-                <p style={{ fontSize: 16, fontWeight: 600, color: "#6B7280" }}>No encontramos resultados</p>
-                <p style={{ fontSize: 13, marginTop: 4 }}>Probá con otro término o quita algunos filtros</p>
-                <button onClick={clearFilters} style={{
-                  marginTop: 12, padding: "8px 20px", borderRadius: 8,
-                  background: "#0D4F3C", color: "white", border: "none",
-                  cursor: "pointer", fontSize: 13, fontWeight: 600
-                }}>Limpiar filtros</button>
+            {/* Vista lista: primero categorías, luego instituciones */}
+            {selectedCats.length === 0 ? (
+              // GRID DE CATEGORÍAS
+              <div>
+                <p style={{ fontSize: 13, color: "#6B7280", marginBottom: 12, textAlign: "center" }}>Elegí una categoría para ver las instituciones</p>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                  {CATEGORIAS.map(cat => {
+                    const count = instituciones.filter(i => (i.categorias || []).includes(cat.id)).length
+                    return (
+                      <button key={cat.id} onClick={() => setSelectedCats([cat.id])} style={{
+                        background: "white", border: "1.5px solid #E5E7EB", borderRadius: 14,
+                        padding: "16px 12px", cursor: "pointer", textAlign: "left",
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.05)", transition: "all 0.15s"
+                      }}>
+                        <div style={{ fontSize: 26, marginBottom: 6 }}>{cat.icono}</div>
+                        <div style={{ fontWeight: 700, fontSize: 13, color: "#111827", lineHeight: 1.3 }}>{cat.nombre}</div>
+                        <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 4 }}>{count > 0 ? `${count} lugar${count !== 1 ? 'es' : ''}` : 'Próximamente'}</div>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
             ) : (
-              filtered.map((inst) => (
-                <InstitucionCard
-                  key={inst.id} inst={inst} categorias={CATEGORIAS} isPopup={false}
-                  onClick={() => { setSelectedInst(inst); setView("mapa") }}
-                  onVoluntario={() => { setSelectedInst(inst); setShowVoluntarioModal(true) }}
-                  onHistoria={() => { setInstHistoria(inst); setShowHistoriaModal(true) }}
-                  onResena={() => { setSelectedInst(inst); setShowResenaModal(true) }}
-                />
-              ))
+              // LISTA DE INSTITUCIONES FILTRADAS POR CATEGORÍA
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+                  <button onClick={() => setSelectedCats([])} style={{ background: "#F3F4F6", border: "none", borderRadius: 8, padding: "6px 12px", cursor: "pointer", fontSize: 12, fontWeight: 600, color: "#374151", display: "flex", alignItems: "center", gap: 4 }}>← Categorías</button>
+                  <span style={{ fontSize: 14, fontWeight: 700, color: "#0D4F3C" }}>
+                    {CATEGORIAS.find(c => selectedCats.includes(c.id))?.icono} {CATEGORIAS.find(c => selectedCats.includes(c.id))?.nombre}
+                  </span>
+                </div>
+                {filtered.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "40px 20px", color: "#9CA3AF" }}>
+                    <div style={{ fontSize: 40, marginBottom: 10 }}>🏢</div>
+                    <p style={{ fontSize: 14, color: "#6B7280" }}>No hay instituciones en esta categoría aún</p>
+                  </div>
+                ) : (
+                  filtered.map((inst) => (
+                    <div key={inst.id} style={{ marginBottom: 12 }}>
+                      <InstitucionCard
+                        inst={inst} categorias={CATEGORIAS} isPopup={false}
+                        onClick={() => { 
+                          setSelectedInst(inst)
+                          setView("mapa")
+                          setTimeout(() => {
+                            if (mapInstance.current && inst.lat && inst.lng) {
+                              mapInstance.current.flyTo([inst.lat, inst.lng], 15, { duration: 0.8 })
+                            }
+                          }, 300)
+                        }}
+                        onVoluntario={() => { setSelectedInst(inst); setShowVoluntarioModal(true) }}
+                        onHistoria={() => { setInstHistoria(inst); setShowHistoriaModal(true) }}
+                        onResena={() => { setSelectedInst(inst); setShowResenaModal(true) }}
+                      />
+                    </div>
+                  ))
+                )}
+              </div>
             )}
           </div>
         )}
