@@ -351,7 +351,7 @@ export default function DondeSumo() {
   const [showFilters, setShowFilters] = useState(false)
   const [mapReady, setMapReady] = useState(false)
   const [view, setView] = useState("mapa")
-  const [showModal, setShowModal] = useState(true)
+  const [showModal, setShowModal] = useState(false)
   const [showVoluntarioModal, setShowVoluntarioModal] = useState(false)
   const [voluntarioData, setVoluntarioData] = useState({ nombre: "", email: "", telefono: "", oferta: [] })
   const [instituciones, setInstituciones] = useState(INSTITUCIONES_MOCK)
