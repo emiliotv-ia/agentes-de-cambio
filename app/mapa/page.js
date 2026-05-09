@@ -713,7 +713,7 @@ export default function DondeSumo() {
       <div style={{ flex: 1, position: "relative", overflow: view === "mapa" ? "hidden" : "auto" }}>
         {view === "mapa" ? (
           <>
-            <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+            <div ref={mapRef} style={{ width: "100%", height: "100%", display: view === "mapa" ? "block" : "none" }} />
             {selectedInst && (
               <div style={{
                 position: "absolute", bottom: 16, left: 16, right: 16,
