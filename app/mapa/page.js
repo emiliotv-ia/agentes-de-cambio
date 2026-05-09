@@ -710,43 +710,46 @@ export default function DondeSumo() {
       </div>
 
       {/* CONTENT */}
-      <div style={{ flex: 1, position: "relative", overflow: view === "mapa" ? "hidden" : "auto" }}>
-        {view === "mapa" ? (
-          <>
-            <div ref={mapRef} style={{ width: "100%", height: "100%", display: view === "mapa" ? "block" : "none" }} />
-            {selectedInst && (
-              <div style={{
-                position: "absolute", bottom: 16, left: 16, right: 16,
-                zIndex: 1000, maxWidth: 400, margin: "0 auto"
-              }}>
-                <InstitucionCard
-                  inst={selectedInst} categorias={CATEGORIAS}
-                  onClose={() => setSelectedInst(null)} isPopup={true}
-                  onVoluntario={() => setShowVoluntarioModal(true)}
-                  onHistoria={() => { setInstHistoria(selectedInst); setShowHistoriaModal(true) }}
-                  onResena={() => setShowResenaModal(true)}
-                />
-              </div>
-            )}
+      <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+        {/* MAPA - siempre montado, solo oculto en vista lista */}
+        <div style={{ display: view === "mapa" ? "block" : "none", width: "100%", height: "100%", position: "absolute", inset: 0, zIndex: 1 }}>
+          <div ref={mapRef} style={{ width: "100%", height: "100%" }} />
+          {selectedInst && (
             <div style={{
-              position: "absolute", top: 12, right: 12, background: "white",
-              borderRadius: 10, padding: "10px 14px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-              zIndex: 1000, fontSize: 11
+              position: "absolute", bottom: 16, left: 16, right: 16,
+              zIndex: 1000, maxWidth: 400, margin: "0 auto"
             }}>
-              <div style={{ fontWeight: 700, marginBottom: 6, color: "#374151" }}>Referencias</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
-                <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#0D4F3C", border: "3px solid white", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }} />
-                <span style={{ color: "#6B7280" }}>Verificada</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#9CA3AF", border: "3px solid white", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }} />
-                <span style={{ color: "#6B7280" }}>Pendiente</span>
-              </div>
+              <InstitucionCard
+                inst={selectedInst} categorias={CATEGORIAS}
+                onClose={() => setSelectedInst(null)} isPopup={true}
+                onVoluntario={() => setShowVoluntarioModal(true)}
+                onHistoria={() => { setInstHistoria(selectedInst); setShowHistoriaModal(true) }}
+                onResena={() => setShowResenaModal(true)}
+              />
             </div>
-          </>
-        ) : (
+          )}
           <div style={{
-            padding: 16, overflowY: "auto", height: "100%",
+            position: "absolute", top: 12, right: 12, background: "white",
+            borderRadius: 10, padding: "10px 14px", boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+            zIndex: 1000, fontSize: 11
+          }}>
+            <div style={{ fontWeight: 700, marginBottom: 6, color: "#374151" }}>Referencias</div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+              <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#0D4F3C", border: "3px solid white", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }} />
+              <span style={{ color: "#6B7280" }}>Verificada</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ width: 14, height: 14, borderRadius: "50%", background: "#9CA3AF", border: "3px solid white", boxShadow: "0 1px 3px rgba(0,0,0,0.2)" }} />
+              <span style={{ color: "#6B7280" }}>Pendiente</span>
+            </div>
+          </div>
+        </div>
+
+        {/* LISTA - visible solo en vista lista */}
+        {view === "lista" && (
+          <div style={{
+            position: "absolute", inset: 0, zIndex: 2,
+            padding: 16, overflowY: "auto", background: "#F3F4F6",
             display: "flex", flexDirection: "column", gap: 12
           }}>
             {/* Vista lista: primero categorías, luego instituciones */}
