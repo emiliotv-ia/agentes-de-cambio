@@ -844,7 +844,7 @@ export default function DondeSumo() {
                 const res = await fetch('/api/voluntarios/registro', {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ ...voluntarioData, institucion_id: selectedInst?.id })
+                  body: JSON.stringify({ ...voluntarioData, institucion_id: selectedInst?.id, institucion_nombre: selectedInst?.nombre })
                 })
                 const data = await res.json()
                 if (data.success) {
