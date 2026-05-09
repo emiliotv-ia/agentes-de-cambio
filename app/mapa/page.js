@@ -748,7 +748,7 @@ export default function DondeSumo() {
         {/* LISTA - visible solo en vista lista */}
         {view === "lista" && (
           <div style={{
-            position: "absolute", inset: 0, zIndex: 2,
+            position: "absolute", inset: 0, zIndex: 5000,
             padding: 16, overflowY: "auto", background: "#F3F4F6",
             display: "flex", flexDirection: "column", gap: 12
           }}>
