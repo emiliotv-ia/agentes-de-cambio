@@ -353,7 +353,7 @@ export default function DondeSumo() {
   const [view, setView] = useState("mapa")
   const [showModal, setShowModal] = useState(false)
   const [showVoluntarioModal, setShowVoluntarioModal] = useState(false)
-  const [voluntarioData, setVoluntarioData] = useState({ nombre: "", email: "", telefono: "", oferta: [] })
+  const [voluntarioData, setVoluntarioData] = useState({ nombre: "", email: "", telefono: "", oferta: [], comentario: "", otros: "" })
   const [instituciones, setInstituciones] = useState(INSTITUCIONES_MOCK)
   const [showMenu, setShowMenu] = useState(false)
   const [showQuienesSomos, setShowQuienesSomos] = useState(false)
@@ -878,7 +878,7 @@ export default function DondeSumo() {
               />
               <div style={{ color: "#6B7280", fontSize: 13, fontWeight: 600 }}>¿Que puedo ofrecer?</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                {["⏰ Tiempo", "🚗 Transporte", "💼 Habilidad", "🔧 Oficio"].map(opt => (
+                {["⏰ Tiempo", "🚗 Transporte", "💼 Habilidad", "🔧 Oficio", "🍱 Alimentos", "📦 Otros"].map(opt => (
                   <label key={opt} style={{ display: "flex", gap: 8, fontSize: 13 }}>
                     <input
                       type="checkbox"
@@ -894,6 +894,15 @@ export default function DondeSumo() {
                   </label>
                 ))}
               </div>
+              {voluntarioData.oferta.includes("📦 Otros") && (
+                <input
+                  type="text"
+                  placeholder="Describí qué podés donar..."
+                  value={voluntarioData.otros || ""}
+                  onChange={e => setVoluntarioData({...voluntarioData, otros: e.target.value})}
+                  style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }}
+                />
+              )}
               <textarea
                 placeholder="Dejanos tu comentario o mensaje (opcional)"
                 value={voluntarioData.comentario || ""}
