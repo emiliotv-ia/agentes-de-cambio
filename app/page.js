@@ -99,6 +99,8 @@ export default function LandingPage() {
 
       <footer style={{ background: "#0D4F3C", padding: "20px 24px", textAlign: "center", color: "rgba(255,255,255,0.6)", fontSize: 12 }}>
         <span style={{ fontWeight: 700, color: "#86EFAC" }}>Agentes de Cambio</span>{" · "}Chaco, Argentina{" · "}Cada acción cuenta 💚
+        <br/>
+        <a href="/terminos" style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, marginTop: 6, display: "inline-block", textDecoration: "underline" }}>Términos y Condiciones · Aviso Legal</a>
       </footer>
 
       {showQuienesSomos && (

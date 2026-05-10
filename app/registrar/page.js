@@ -185,7 +185,15 @@ export default function RegistrarPage() {
                   <textarea value={form.necesidades} onChange={e => update('necesidades', e.target.value)} placeholder="Ej: Necesitamos 50 viandas diarias, ropa de invierno talle 4-8, voluntarios los sábados..." rows={4} style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical", boxSizing: "border-box" }} />
                 </div>
               </div>
-              <div style={{ display: "flex", gap: 10, marginTop: 24 }}>
+              <div style={{ background: "#FEF3C7", border: "1px solid #FCD34D", borderRadius: 10, padding: "12px 16px", marginTop: 16 }}>
+                <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
+                  <input type="checkbox" required style={{ width: 18, height: 18, marginTop: 2, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: "#78350F", lineHeight: 1.6 }}>
+                    Acepto los <a href="/terminos" target="_blank" style={{ color: "#92400E", fontWeight: 700 }}>Términos y Condiciones</a> de Agentes de Cambio. Declaro que la información es verídica y me comprometo a administrar de forma transparente las donaciones recibidas. *
+                  </span>
+                </label>
+              </div>
+              <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
                 <button type="button" onClick={() => setPaso(3)} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "13px", borderRadius: 10, fontWeight: 700, cursor: "pointer", fontSize: 15 }}>← Anterior</button>
                 <button type="submit" disabled={enviando} style={{ flex: 2, background: "#0D4F3C", color: "white", border: "none", padding: "13px", borderRadius: 10, fontWeight: 700, cursor: "pointer", fontSize: 15 }}>
                   {enviando ? "Enviando..." : "✅ Enviar solicitud"}
