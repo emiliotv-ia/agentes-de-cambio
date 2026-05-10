@@ -67,6 +67,32 @@ export default function LandingPage() {
         </div>
       </div>
 
+      {/* CÓMO FUNCIONA */}
+      <div style={{ maxWidth: 700, margin: "0 auto", padding: "44px 24px 0" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+          <div style={{ width: 4, height: 32, background: "#0D4F3C", borderRadius: 4 }} />
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Cómo funciona?</h2>
+        </div>
+        <div style={{ background: "white", borderRadius: 16, padding: "24px 28px", boxShadow: "0 2px 16px rgba(0,0,0,0.06)" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {[
+              { paso: "1", icon: "🗺️", titulo: "Encontrá una institución", desc: "Buscá en el mapa o filtrá por categoría y encontrá el lugar que más se alinea con lo que querés donar o hacer." },
+              { paso: "2", icon: "🚚", titulo: "Registrá tu donación", desc: "Clickeá en 'Donar materiales', describí qué tenés para ofrecer y dejá tus datos de contacto." },
+              { paso: "3", icon: "📧", titulo: "La institución te contacta", desc: "La institución recibe un email con tu información y se pone en contacto para coordinar la entrega. ¡Así de simple!" },
+              { paso: "4", icon: "💚", titulo: "El impacto es real", desc: "Tu donación llega directamente a quienes más lo necesitan, sin intermediarios. Cada aporte hace la diferencia." },
+            ].map((item, i) => (
+              <div key={i} style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+                <div style={{ background: "#0D4F3C", color: "white", width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 14, flexShrink: 0 }}>{item.paso}</div>
+                <div>
+                  <div style={{ fontWeight: 700, color: "#111827", fontSize: 15, marginBottom: 4 }}>{item.icon} {item.titulo}</div>
+                  <div style={{ color: "#6B7280", fontSize: 13, lineHeight: 1.6 }}>{item.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "32px 24px 0" }}>
         <div style={{ background: "linear-gradient(135deg, #1E40AF, #3B82F6)", borderRadius: 20, padding: "32px 28px", color: "white", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", right: -10, top: -10, fontSize: 90, opacity: 0.1 }}>🏢</div>
