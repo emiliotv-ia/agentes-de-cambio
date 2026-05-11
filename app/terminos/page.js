@@ -82,7 +82,7 @@ Al registrarse, las instituciones aceptan estos términos y se comprometen a act
           },
           {
             titulo: "9. Contacto",
-            contenido: `Para consultas, reclamos o solicitudes relacionadas con estos términos, podés contactarnos a través del formulario de contacto disponible en la plataforma o enviando un mensaje desde el menú principal.`
+            contenido: `Para consultas, reclamos o solicitudes relacionadas con estos términos, podés contactarnos por email a agentesdecambiochaco@gmail.com o a través del formulario de contacto disponible en la plataforma.`
           }
         ].map((seccion, i) => (
           <div key={i} style={{ background: "white", borderRadius: 14, padding: "22px 24px", marginBottom: 14, boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>

@@ -42,7 +42,7 @@ export async function POST(request) {
     try {
       await resend.emails.send({
         from: 'Agentes de Cambio <onboarding@resend.dev>',
-        to: 'emiliotv@gmail.com',
+        to: 'agentesdecambiochaco@gmail.com',
         subject: '🏢 Nueva solicitud de institución',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
           <div style="background:#1E40AF;padding:24px;border-radius:12px 12px 0 0">
