@@ -7,10 +7,10 @@ const supabase = createClient(
 
 export async function POST(request) {
   try {
-    const { nombre, comentario, calificacion, institucion_id } = await request.json()
+    const { nombre, apellido, celular, comentario, calificacion, institucion_id } = await request.json()
 
-    if (!comentario || !institucion_id) {
-      return Response.json({ error: 'Comentario e institución son requeridos' }, { status: 400 })
+    if (!nombre || !apellido || !celular || !comentario || !institucion_id) {
+      return Response.json({ error: 'Todos los campos son requeridos' }, { status: 400 })
     }
 
     const { data, error } = await supabase
@@ -19,6 +19,8 @@ export async function POST(request) {
         institucion_id,
         calificacion: calificacion || 5,
         comentario,
+        apellido,
+        celular,
         estado_verificacion: false
       }])
       .select()

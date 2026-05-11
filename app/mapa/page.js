@@ -367,7 +367,7 @@ export default function DondeSumo() {
   const [showHistoriaModal, setShowHistoriaModal] = useState(false)
   const [instHistoria, setInstHistoria] = useState(null)
   const [showResenaModal, setShowResenaModal] = useState(false)
-  const [resenaData, setResenaData] = useState({ nombre: "", comentario: "", calificacion: 5 })
+  const [resenaData, setResenaData] = useState({ nombre: "", apellido: "", celular: "", comentario: "", calificacion: 5 })
   const [showDonacionModal, setShowDonacionModal] = useState(false)
   const [donacionData, setDonacionData] = useState({ nombre: "", email: "", telefono: "", descripcion: "" })
   const mapRef = useRef(null)
@@ -982,6 +982,9 @@ export default function DondeSumo() {
           <div style={{ background: "white", borderRadius: 16, padding: 24, maxWidth: 460, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
             <h2 style={{ color: "#0D4F3C", margin: "0 0 4px 0", fontSize: 20 }}>⭐ Dejar reseña</h2>
             <p style={{ color: "#6B7280", fontSize: 13, margin: "0 0 16px 0" }}>{selectedInst.nombre}</p>
+            <div style={{ background: "#FEF3C7", borderRadius: 8, padding: "10px 12px", marginBottom: 14, fontSize: 12, color: "#78350F" }}>
+              🔒 Tus datos son privados y no se publican. Solo se usan para validar la autenticidad de la reseña.
+            </div>
             <form onSubmit={async e => {
               e.preventDefault()
               try {
@@ -994,7 +997,7 @@ export default function DondeSumo() {
                 if (data.success) {
                   alert('✅ ¡Gracias por tu reseña!')
                   setShowResenaModal(false)
-                  setResenaData({ nombre: "", comentario: "", calificacion: 5 })
+                  setResenaData({ nombre: "", apellido: "", celular: "", comentario: "", calificacion: 5 })
                 } else {
                   alert(`❌ Error: ${data.error}`)
                 }
@@ -1002,7 +1005,11 @@ export default function DondeSumo() {
                 alert('❌ Error: ' + err.message)
               }
             }} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <input type="text" placeholder="Tu nombre (opcional)" value={resenaData.nombre} onChange={e => setResenaData({...resenaData, nombre: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                <input type="text" placeholder="Nombre *" required value={resenaData.nombre || ""} onChange={e => setResenaData({...resenaData, nombre: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+                <input type="text" placeholder="Apellido *" required value={resenaData.apellido || ""} onChange={e => setResenaData({...resenaData, apellido: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              </div>
+              <input type="tel" placeholder="Celular *" required value={resenaData.celular || ""} onChange={e => setResenaData({...resenaData, celular: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
               {/* Estrellas */}
               <div>
                 <div style={{ color: "#6B7280", fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Calificación</div>
@@ -1015,7 +1022,7 @@ export default function DondeSumo() {
                   ))}
                 </div>
               </div>
-              <textarea placeholder="Contanos tu experiencia..." required value={resenaData.comentario} onChange={e => setResenaData({...resenaData, comentario: e.target.value})} rows={4} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical" }} />
+              <textarea placeholder="Contanos tu experiencia... *" required value={resenaData.comentario} onChange={e => setResenaData({...resenaData, comentario: e.target.value})} rows={4} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical" }} />
               <div style={{ display: "flex", gap: 8 }}>
                 <button type="submit" style={{ flex: 1, background: "#0D4F3C", color: "white", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Enviar reseña</button>
                 <button type="button" onClick={() => setShowResenaModal(false)} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Cancelar</button>
