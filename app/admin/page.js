@@ -24,7 +24,7 @@ export default function AdminPage() {
     nombre: "", slug: "", descripcion: "", direccion: "", localidad: "",
     latitud: "", longitud: "", telefono: "", email: "", whatsapp: "",
     instagram: "", historia: "", responsables: "", dirigido_a: "",
-    anio_fundacion: "", estado_verificacion: "verificada", acepta_retiro: false
+    anio_fundacion: "", estado_verificacion: "en_proceso", acepta_retiro: false
   })
 
   const login = () => {
@@ -236,6 +236,14 @@ export default function AdminPage() {
                         </div>
                       ))}
                       <div style={{ gridColumn: "1 / -1" }}>
+                        <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Estado de verificación</label>
+                        <select value={nuevaInst.estado_verificacion} onChange={e => setNuevaInst({...nuevaInst, estado_verificacion: e.target.value})} style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13, boxSizing: "border-box" }}>
+                          <option value="en_proceso">🕐 En proceso de verificación</option>
+                          <option value="verificada">✅ Verificada</option>
+                          <option value="pendiente">⏳ Pendiente</option>
+                        </select>
+                      </div>
+                      <div style={{ gridColumn: "1 / -1" }}>
                         <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13 }}>
                           <input type="checkbox" checked={nuevaInst.acepta_retiro} onChange={e => setNuevaInst({...nuevaInst, acepta_retiro: e.target.checked})} />
                           Acepta retiro de materiales
@@ -262,6 +270,14 @@ export default function AdminPage() {
                     <input placeholder="WhatsApp" value={editInst.whatsapp || ''} onChange={e => setEditInst({...editInst, whatsapp: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }} />
                     <input placeholder="Instagram" value={editInst.instagram || ''} onChange={e => setEditInst({...editInst, instagram: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }} />
                     <input type="number" placeholder="Año de fundación" value={editInst.anio_fundacion || ''} onChange={e => setEditInst({...editInst, anio_fundacion: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }} />
+                    <div>
+                      <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Estado de verificación</label>
+                      <select value={editInst.estado_verificacion || 'en_proceso'} onChange={e => setEditInst({...editInst, estado_verificacion: e.target.value})} style={{ width: "100%", padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }}>
+                        <option value="en_proceso">🕐 En proceso de verificación</option>
+                        <option value="verificada">✅ Verificada</option>
+                        <option value="pendiente">⏳ Pendiente</option>
+                      </select>
+                    </div>
                     <div style={{ display: "flex", gap: 8 }}>
                       <button onClick={guardarInstitucion} style={{ flex: 1, background: "#0D4F3C", color: "white", border: "none", padding: "10px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>💾 Guardar</button>
                       <button onClick={() => setEditInst(null)} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "10px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>Cancelar</button>
