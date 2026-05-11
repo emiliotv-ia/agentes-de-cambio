@@ -35,6 +35,17 @@ export async function POST(request) {
   }
 }
 
+export async function DELETE(request) {
+  try {
+    const { id } = await request.json()
+    const { error } = await supabase.from('instituciones').delete().eq('id', id)
+    if (error) return Response.json({ error: error.message }, { status: 400 })
+    return Response.json({ success: true })
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 })
+  }
+}
+
 export async function PUT(request) {
   try {
     const body = await request.json()

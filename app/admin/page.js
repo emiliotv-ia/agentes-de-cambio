@@ -75,6 +75,12 @@ export default function AdminPage() {
     fetchData('instituciones')
   }
 
+  const eliminarInstitucion = async (id, nombre) => {
+    if (!confirm(`¿Seguro que querés eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return
+    await fetch('/api/admin/institucion', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
+    fetchData('instituciones')
+  }
+
   if (!auth) return (
     <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAF9" }}>
       <div style={{ background: "white", borderRadius: 20, padding: 40, maxWidth: 380, width: "100%", boxShadow: "0 4px 24px rgba(0,0,0,0.1)" }}>
@@ -267,7 +273,10 @@ export default function AdminPage() {
                       <h3 style={{ margin: "0 0 4px 0", fontSize: 15, color: "#111827" }}>{inst.nombre}</h3>
                       <p style={{ margin: 0, fontSize: 12, color: "#9CA3AF" }}>📍 {inst.localidad} · {inst.estado_verificacion}</p>
                     </div>
+                  <div style={{ display: "flex", gap: 8 }}>
                     <button onClick={() => setEditInst(inst)} style={{ background: "#F0FDF4", color: "#0D4F3C", border: "1.5px solid #86EFAC", padding: "8px 16px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>✏️ Editar</button>
+                    <button onClick={() => eliminarInstitucion(inst.id, inst.nombre)} style={{ background: "#FEE2E2", color: "#991B1B", border: "1.5px solid #FCA5A5", padding: "8px 16px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 13 }}>🗑️ Eliminar</button>
+                  </div>
                   </div>
                 )}
               </div>
