@@ -19,6 +19,13 @@ export default function AdminPage() {
   const [data, setData] = useState({})
   const [loading, setLoading] = useState(false)
   const [editInst, setEditInst] = useState(null)
+  const [showNueva, setShowNueva] = useState(false)
+  const [nuevaInst, setNuevaInst] = useState({
+    nombre: "", slug: "", descripcion: "", direccion: "", localidad: "",
+    latitud: "", longitud: "", telefono: "", email: "", whatsapp: "",
+    instagram: "", historia: "", responsables: "", dirigido_a: "",
+    anio_fundacion: "", estado_verificacion: "verificada", acepta_retiro: false
+  })
 
   const login = () => {
     if (pass === PASSWORD) { setAuth(true); setError('') }
@@ -52,6 +59,19 @@ export default function AdminPage() {
   const guardarInstitucion = async () => {
     await fetch('/api/admin/institucion', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editInst) })
     setEditInst(null)
+    fetchData('instituciones')
+  }
+
+  const crearInstitucion = async () => {
+    if (!nuevaInst.nombre || !nuevaInst.localidad) { alert('Nombre y localidad son requeridos'); return }
+    const slug = nuevaInst.slug || nuevaInst.nombre.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+    await fetch('/api/admin/institucion', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...nuevaInst, slug, latitud: nuevaInst.latitud ? parseFloat(nuevaInst.latitud) : null, longitud: nuevaInst.longitud ? parseFloat(nuevaInst.longitud) : null, anio_fundacion: nuevaInst.anio_fundacion ? parseInt(nuevaInst.anio_fundacion) : null })
+    })
+    setShowNueva(false)
+    setNuevaInst({ nombre: "", slug: "", descripcion: "", direccion: "", localidad: "", latitud: "", longitud: "", telefono: "", email: "", whatsapp: "", instagram: "", historia: "", responsables: "", dirigido_a: "", anio_fundacion: "", estado_verificacion: "verificada", acepta_retiro: false })
     fetchData('instituciones')
   }
 
@@ -174,6 +194,56 @@ export default function AdminPage() {
             ))}
 
             {/* INSTITUCIONES - EDITAR */}
+            {tab === 'instituciones' && (
+              <>
+                <button onClick={() => setShowNueva(!showNueva)} style={{ background: "#0D4F3C", color: "white", border: "none", padding: "12px 20px", borderRadius: 10, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>
+                  {showNueva ? '✕ Cancelar' : '+ Nueva institución'}
+                </button>
+
+                {showNueva && (
+                  <div style={{ background: "white", borderRadius: 14, padding: "24px", boxShadow: "0 2px 10px rgba(0,0,0,0.08)", border: "2px solid #86EFAC" }}>
+                    <h3 style={{ color: "#0D4F3C", margin: "0 0 16px 0" }}>➕ Nueva Institución</h3>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                      {[
+                        { k: "nombre", label: "Nombre *", full: true },
+                        { k: "descripcion", label: "Descripción *", full: true, textarea: true },
+                        { k: "direccion", label: "Dirección *" },
+                        { k: "localidad", label: "Localidad *" },
+                        { k: "latitud", label: "Latitud", placeholder: "-27.4414" },
+                        { k: "longitud", label: "Longitud", placeholder: "-59.0272" },
+                        { k: "telefono", label: "Teléfono" },
+                        { k: "email", label: "Email" },
+                        { k: "whatsapp", label: "WhatsApp" },
+                        { k: "instagram", label: "Instagram" },
+                        { k: "responsables", label: "Responsables", full: true },
+                        { k: "dirigido_a", label: "Dirigido a", full: true },
+                        { k: "historia", label: "Historia", full: true, textarea: true },
+                        { k: "anio_fundacion", label: "Año fundación", type: "number" },
+                      ].map(f => (
+                        <div key={f.k} style={{ gridColumn: f.full ? "1 / -1" : "auto" }}>
+                          <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>{f.label}</label>
+                          {f.textarea ? (
+                            <textarea value={nuevaInst[f.k] || ''} onChange={e => setNuevaInst({...nuevaInst, [f.k]: e.target.value})} rows={3} style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13, resize: "vertical", boxSizing: "border-box" }} />
+                          ) : (
+                            <input type={f.type || "text"} placeholder={f.placeholder || ''} value={nuevaInst[f.k] || ''} onChange={e => setNuevaInst({...nuevaInst, [f.k]: e.target.value})} style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13, boxSizing: "border-box" }} />
+                          )}
+                        </div>
+                      ))}
+                      <div style={{ gridColumn: "1 / -1" }}>
+                        <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 13 }}>
+                          <input type="checkbox" checked={nuevaInst.acepta_retiro} onChange={e => setNuevaInst({...nuevaInst, acepta_retiro: e.target.checked})} />
+                          Acepta retiro de materiales
+                        </label>
+                      </div>
+                    </div>
+                    <button onClick={crearInstitucion} style={{ marginTop: 16, background: "#0D4F3C", color: "white", border: "none", padding: "12px 24px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>
+                      ✅ Crear institución
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
+
             {tab === 'instituciones' && items.map(inst => (
               <div key={inst.id} style={{ background: "white", borderRadius: 14, padding: "18px 22px", boxShadow: "0 2px 10px rgba(0,0,0,0.05)" }}>
                 {editInst?.id === inst.id ? (
