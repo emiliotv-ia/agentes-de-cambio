@@ -620,6 +620,12 @@ export default function DondeSumo() {
             borderRadius: 12, boxShadow: "0 8px 30px rgba(0,0,0,0.15)",
             zIndex: 9000, minWidth: 200, overflow: "hidden"
           }}>
+            <a href="/" style={{
+              display: "block", width: "100%", padding: "14px 20px", textAlign: "left",
+              background: "none", border: "none", borderBottom: "1px solid #F3F4F6",
+              cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#0D4F3C",
+              textDecoration: "none"
+            }}>🏠 Ir al inicio</a>
             <a href="/registrar" onClick={() => setShowMenu(false)} style={{
               display: "block", width: "100%", padding: "14px 20px", textAlign: "left",
               background: "none", border: "none", borderBottom: "1px solid #F3F4F6",
@@ -983,7 +989,7 @@ export default function DondeSumo() {
             <h2 style={{ color: "#0D4F3C", margin: "0 0 4px 0", fontSize: 20 }}>⭐ Dejar reseña</h2>
             <p style={{ color: "#6B7280", fontSize: 13, margin: "0 0 16px 0" }}>{selectedInst.nombre}</p>
             <div style={{ background: "#FEF3C7", borderRadius: 8, padding: "10px 12px", marginBottom: 14, fontSize: 12, color: "#78350F" }}>
-              🔒 Tus datos son privados y no se publican. Solo se usan para validar la autenticidad de la reseña.
+              🔒 Pedimos tu nombre, apellido y celular para poder corroborar la autenticidad de cada reseña. Tus datos son privados y nunca se publican.
             </div>
             <form onSubmit={async e => {
               e.preventDefault()
