@@ -16,7 +16,7 @@ export default function LandingPage() {
   const acciones = [
     { icon: "🗺️", titulo: "Buscá en el mapa", desc: "Descubrí instituciones cerca tuyo", link: "/mapa", img: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" },
     { icon: "🔍", titulo: "Filtrá por tema", desc: "Niños, animales, salud, educación y más", link: "/mapa?lista=true", img: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80&crop=faces&fit=crop", imgCustom: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&q=80" },
-    { icon: "🤝", titulo: "Postulate como Voluntarios en ADC", desc: "Doná tu tiempo, habilidades o recursos. TODO SUMA", accion: "voluntario", img: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&q=80" },
+    { icon: "🤝", titulo: "Postulate como Agente de Cambio", desc: "Doná tu tiempo, habilidades o recursos. TODO SUMA", accion: "voluntario", img: "/voluntarios.png" },
     { icon: "🚚", titulo: "Doná materiales", desc: "Ropa, abrigos, alimentos, útiles, muebles, juguetes", accion: "donacion", img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&q=80" },
     { icon: "⭐", titulo: "Dejá tu reseña", desc: "Ayudá a otros a elegir dónde ayudar", link: "/mapa", img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&q=80", estrellas: true },
   ]
