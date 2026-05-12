@@ -68,13 +68,13 @@ export default function LandingPage() {
                 onClick={item.accion ? (e) => handleAccionClick(item, e) : undefined}
                 style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", cursor: "pointer" }}
               >
-                <img src={imgSrc} alt={item.titulo} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: isVoluntario ? "center 30%" : "center", transform: isVoluntario ? "scale(0.85)" : "none", transformOrigin: "center", display: "block" }} />
+                <img src={imgSrc} alt={item.titulo} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }} />
                 {isVoluntario && (
                   <div style={{ position: "absolute", top: 12, right: 12, background: "#0D4F3C", color: "white", padding: "4px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
                     Voluntario
                   </div>
                 )}
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
+                <div style={{ position: "absolute", inset: 0, background: isVoluntario ? "linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.1) 50%, transparent 100%)" : "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
                 <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
                   <div style={{ fontSize: 24 }}>{item.icon}</div>
                   <div style={{ fontWeight: 800, color: "white", fontSize: 17, lineHeight: 1.2 }}>{item.titulo}</div>
