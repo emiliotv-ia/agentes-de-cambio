@@ -68,7 +68,7 @@ export default function LandingPage() {
                 onClick={item.accion ? (e) => handleAccionClick(item, e) : undefined}
                 style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", cursor: "pointer" }}
               >
-                <img src={imgSrc} alt={item.titulo} style={{ width: "100%", height: "100%", objectFit: isVoluntario ? "contain" : "cover", objectPosition: "center", background: isVoluntario ? "#f5f0e8" : "transparent", display: "block" }} />
+                <img src={imgSrc} alt={item.titulo} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: isVoluntario ? "center 30%" : "center", transform: isVoluntario ? "scale(0.85)" : "none", transformOrigin: "center", display: "block" }} />
                 {isVoluntario && (
                   <div style={{ position: "absolute", top: 12, right: 12, background: "#0D4F3C", color: "white", padding: "4px 10px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
                     Voluntario
