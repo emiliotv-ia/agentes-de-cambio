@@ -9,6 +9,7 @@ export default function LandingPage() {
   const [agenteData, setAgenteData] = useState({ nombre: "", email: "", telefono: "", localidad: "", motivacion: "" })
   const [donacionData, setDonacionData] = useState({ nombre: "", celular: "", tipos: [], ubicacion: "", comentario: "" })
   const [eventoData, setEventoData] = useState({ titulo: "", descripcion: "", fecha: "", hora: "", lugar: "", localidad: "", organizador: "", contacto: "" })
+  const [showComoFunciona, setShowComoFunciona] = useState(false)
   const [enviando, setEnviando] = useState(false)
 
   // Todas las cards con el mismo estilo
@@ -54,40 +55,83 @@ export default function LandingPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
           {/* CARD 1: BUSCÁ EN EL MAPA */}
-          <a href="/mapa" style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
-            <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" alt="Buscá en el mapa" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
-            <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
-              <div style={{ fontSize: 24 }}>🗺️</div>
-              <div style={{ fontWeight: 800, color: "white", fontSize: 17 }}>Buscá en el mapa</div>
-              <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Descubrí instituciones cerca tuyo</div>
-            </div>
-            <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
-          </a>
-
-          {/* CÓMO FUNCIONA - inline entre cards */}
-          <div style={{ background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 2px 16px rgba(0,0,0,0.06)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-              <div style={{ width: 4, height: 24, background: "#0D4F3C", borderRadius: 4 }} />
-              <h3 style={{ fontSize: 18, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Cómo funciona?</h3>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {[
-                { paso: "1", icon: "🗺️", titulo: "Encontrá una institución", desc: "Buscá en el mapa o filtrá por categoría." },
-                { paso: "2", icon: "🚚", titulo: "Registrá tu donación", desc: "Describí qué tenés para ofrecer y dejá tus datos." },
-                { paso: "3", icon: "📧", titulo: "La institución te contacta", desc: "Se ponen en contacto para coordinar. ¡Así de simple!" },
-                { paso: "4", icon: "💚", titulo: "El impacto es real", desc: "Tu aporte llega directo a quienes más lo necesitan." },
-              ].map((item, i) => (
-                <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  <div style={{ background: "#0D4F3C", color: "white", width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 13, flexShrink: 0 }}>{item.paso}</div>
-                  <div>
-                    <div style={{ fontWeight: 700, color: "#111827", fontSize: 14, marginBottom: 2 }}>{item.icon} {item.titulo}</div>
-                    <div style={{ color: "#6B7280", fontSize: 13, lineHeight: 1.5 }}>{item.desc}</div>
+          <div style={{ position: "relative" }}
+            onMouseEnter={e => { const p = e.currentTarget.querySelector('.como-funciona'); if(p) p.style.opacity = '1'; if(p) p.style.pointerEvents = 'auto'; }}
+            onMouseLeave={e => { const p = e.currentTarget.querySelector('.como-funciona'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
+          >
+            <a href="/mapa"
+              onClick={e => {
+                if (window.matchMedia('(hover: none)').matches) {
+                  e.preventDefault()
+                  setShowComoFunciona(true)
+                }
+              }}
+              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
+              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" alt="Buscá en el mapa" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
+              <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
+                <div style={{ fontSize: 24 }}>🗺️</div>
+                <div style={{ fontWeight: 800, color: "white", fontSize: 17 }}>Buscá en el mapa</div>
+                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Descubrí instituciones cerca tuyo</div>
+              </div>
+              <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
+            </a>
+            {/* PANEL HOVER - solo desktop */}
+            <div className="como-funciona" style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, opacity: 0, pointerEvents: "none", transition: "opacity 0.2s ease" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Cómo funciona?</h3>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {[
+                  { paso: "1", icon: "🗺️", titulo: "Encontrá una institución", desc: "Buscá en el mapa o filtrá por categoría." },
+                  { paso: "2", icon: "🚚", titulo: "Registrá tu donación", desc: "Describí qué tenés para ofrecer y dejá tus datos." },
+                  { paso: "3", icon: "📧", titulo: "La institución te contacta", desc: "Se ponen en contacto para coordinar. ¡Así de simple!" },
+                  { paso: "4", icon: "💚", titulo: "El impacto es real", desc: "Tu aporte llega directo a quienes más lo necesitan." },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                    <div style={{ background: "#0D4F3C", color: "white", width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 12, flexShrink: 0 }}>{item.paso}</div>
+                    <div>
+                      <div style={{ fontWeight: 700, color: "#111827", fontSize: 13, marginBottom: 2 }}>{item.icon} {item.titulo}</div>
+                      <div style={{ color: "#6B7280", fontSize: 12, lineHeight: 1.5 }}>{item.desc}</div>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
+
+          {/* MODAL CÓMO FUNCIONA - solo mobile (touch) */}
+          {showComoFunciona && (
+            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 1000, padding: 16 }}>
+              <div style={{ background: "white", borderRadius: 16, padding: "24px 24px 32px", width: "100%", maxWidth: 500, boxShadow: "0 -8px 30px rgba(0,0,0,0.2)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+                  <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
+                  <h3 style={{ fontSize: 18, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Cómo funciona?</h3>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
+                  {[
+                    { paso: "1", icon: "🗺️", titulo: "Encontrá una institución", desc: "Buscá en el mapa o filtrá por categoría." },
+                    { paso: "2", icon: "🚚", titulo: "Registrá tu donación", desc: "Describí qué tenés para ofrecer y dejá tus datos." },
+                    { paso: "3", icon: "📧", titulo: "La institución te contacta", desc: "Se ponen en contacto para coordinar. ¡Así de simple!" },
+                    { paso: "4", icon: "💚", titulo: "El impacto es real", desc: "Tu aporte llega directo a quienes más lo necesitan." },
+                  ].map((item, i) => (
+                    <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+                      <div style={{ background: "#0D4F3C", color: "white", width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 13, flexShrink: 0 }}>{item.paso}</div>
+                      <div>
+                        <div style={{ fontWeight: 700, color: "#111827", fontSize: 14, marginBottom: 2 }}>{item.icon} {item.titulo}</div>
+                        <div style={{ color: "#6B7280", fontSize: 13, lineHeight: 1.5 }}>{item.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <a href="/mapa" style={{ flex: 1, background: "#0D4F3C", color: "white", padding: "13px", borderRadius: 10, fontWeight: 700, fontSize: 14, textDecoration: "none", textAlign: "center" }}>Ir al mapa →</a>
+                  <button onClick={() => setShowComoFunciona(false)} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "13px", borderRadius: 10, fontWeight: 700, fontSize: 14, cursor: "pointer" }}>Cerrar</button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* RESTO DE CARDS */}
           {cards.slice(1).map((item, i) => {
