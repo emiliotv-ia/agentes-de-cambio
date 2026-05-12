@@ -6,8 +6,10 @@ export default function LandingPage() {
   const [showEvento, setShowEvento] = useState(false)
   const [showQuienesSomos, setShowQuienesSomos] = useState(false)
   const [showVoluntario, setShowVoluntario] = useState(false)
+  const [showDonacion, setShowDonacion] = useState(false)
   const [agenteData, setAgenteData] = useState({ nombre: "", email: "", telefono: "", localidad: "", motivacion: "" })
   const [voluntarioData, setVoluntarioData] = useState({ nombre: "", email: "", telefono: "", localidad: "", disponibilidad: "", quePuedoOfrecer: "" })
+  const [donacionData, setDonacionData] = useState({ nombre: "", celular: "", tipos: [], ubicacion: "", comentario: "" })
   const [eventoData, setEventoData] = useState({ titulo: "", descripcion: "", fecha: "", hora: "", lugar: "", localidad: "", organizador: "", contacto: "" })
   const [enviando, setEnviando] = useState(false)
 
@@ -15,15 +17,13 @@ export default function LandingPage() {
     { icon: "🗺️", titulo: "Buscá en el mapa", desc: "Descubrí instituciones cerca tuyo", link: "/mapa", img: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" },
     { icon: "🔍", titulo: "Filtrá por tema", desc: "Niños, animales, salud, educación y más", link: "/mapa?lista=true", img: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80&crop=faces&fit=crop", imgCustom: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&q=80" },
     { icon: "🤝", titulo: "Postulate como Voluntarios en ADC", desc: "Doná tu tiempo, habilidades o recursos. TODO SUMA", accion: "voluntario", img: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&q=80" },
-    { icon: "🚚", titulo: "Doná materiales", desc: "Ropa, abrigos, alimentos, útiles, muebles, juguetes", link: "/registrar", img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&q=80" },
+    { icon: "🚚", titulo: "Doná materiales", desc: "Ropa, abrigos, alimentos, útiles, muebles, juguetes", accion: "donacion", img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&q=80" },
     { icon: "⭐", titulo: "Dejá tu reseña", desc: "Ayudá a otros a elegir dónde ayudar", link: "/mapa", img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&q=80", estrellas: true },
   ]
 
   const handleAccionClick = (item, e) => {
-    if (item.accion === "voluntario") {
-      e.preventDefault()
-      setShowVoluntario(true)
-    }
+    if (item.accion === "voluntario") { e.preventDefault(); setShowVoluntario(true) }
+    if (item.accion === "donacion") { e.preventDefault(); setShowDonacion(true) }
   }
 
   return (
@@ -270,6 +270,50 @@ export default function LandingPage() {
           </div>
         </div>
       )}
+      {showDonacion && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000, padding: 16 }}>
+          <div style={{ background: "white", borderRadius: 16, padding: 28, maxWidth: 480, width: "100%", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }}>
+            <h2 style={{ color: "#92400E", margin: "0 0 6px 0", fontSize: 22 }}>🚚 Registrá tu Donación</h2>
+            <p style={{ color: "#6B7280", fontSize: 13, margin: "0 0 20px 0" }}>Completá el formulario y te contactamos para coordinar.</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <input type="text" placeholder="Tu nombre *" required value={donacionData.nombre} onChange={e => setDonacionData({...donacionData, nombre: e.target.value})} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              <input type="tel" placeholder="Tu celular *" required value={donacionData.celular} onChange={e => setDonacionData({...donacionData, celular: e.target.value})} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 8 }}>¿Qué querés donar? (podés elegir varios)</div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 6 }}>
+                  {["👕 Ropa", "🧥 Abrigos", "👟 Calzados", "🛋️ Bienes muebles", "🚗 Transporte", "📚 Refuerzo escolar", "🔧 Enseñanza de oficios", "🧸 Juguetes", "⏰ Tiempo / Acompañamiento", "🍱 Alimentos", "🏥 Medicamentos", "📦 Otros"].map(opt => (
+                    <label key={opt} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, cursor: "pointer", padding: "6px 8px", borderRadius: 8, border: `1px solid ${donacionData.tipos.includes(opt) ? "#F59E0B" : "#E5E7EB"}`, background: donacionData.tipos.includes(opt) ? "#FEF3C7" : "white" }}>
+                      <input type="checkbox" checked={donacionData.tipos.includes(opt)} onChange={e => setDonacionData({ ...donacionData, tipos: e.target.checked ? [...donacionData.tipos, opt] : donacionData.tipos.filter(t => t !== opt) })} style={{ accentColor: "#F59E0B" }} />
+                      {opt}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <input type="text" placeholder="¿Dónde está el material? (ciudad, barrio, dirección aproximada)" value={donacionData.ubicacion} onChange={e => setDonacionData({...donacionData, ubicacion: e.target.value})} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              <textarea placeholder="Comentario adicional (opcional)" value={donacionData.comentario} onChange={e => setDonacionData({...donacionData, comentario: e.target.value})} rows={3} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical" }} />
+              <div style={{ display: "flex", gap: 8 }}>
+                <button
+                  disabled={enviando}
+                  onClick={async () => {
+                    if (!donacionData.nombre || !donacionData.celular || donacionData.tipos.length === 0) { alert("Completá nombre, celular y elegí al menos un tipo de donación"); return }
+                    setEnviando(true)
+                    try {
+                      const res = await fetch('/api/donaciones', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(donacionData) })
+                      const data = await res.json()
+                      if (data.success) { alert("✅ ¡Gracias " + donacionData.nombre + "! Te contactamos pronto para coordinar."); setShowDonacion(false); setDonacionData({ nombre: "", celular: "", tipos: [], ubicacion: "", comentario: "" }) }
+                      else alert("❌ Error: " + data.error)
+                    } catch (err) { alert("❌ Error: " + err.message) }
+                    finally { setEnviando(false) }
+                  }}
+                  style={{ flex: 1, background: "#F59E0B", color: "white", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}
+                >{enviando ? "Enviando..." : "Registrar donación"}</button>
+                <button onClick={() => setShowDonacion(false)} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "12px", borderRadius: 8, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }
