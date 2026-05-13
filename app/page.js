@@ -10,14 +10,12 @@ export default function LandingPage() {
   const [donacionData, setDonacionData] = useState({ nombre: "", celular: "", tipos: [], ubicacion: "", comentario: "" })
   const [eventoData, setEventoData] = useState({ titulo: "", descripcion: "", fecha: "", hora: "", lugar: "", localidad: "", organizador: "", contacto: "" })
   const [showComoFunciona, setShowComoFunciona] = useState(false)
+  const [showFiltrarInfo, setShowFiltrarInfo] = useState(false)
+  const [showResenaInfo, setShowResenaInfo] = useState(false)
   const [enviando, setEnviando] = useState(false)
 
-  // Todas las cards con el mismo estilo
   const cards = [
-    { icon: "🗺️", titulo: "Buscá en el mapa", desc: "Descubrí instituciones cerca tuyo", link: "/mapa", img: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" },
-    { icon: "🔍", titulo: "Filtrá por tema", desc: "Niños, animales, salud, educación y más", link: "/mapa?lista=true", img: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&q=80" },
     { icon: "🚚", titulo: "Realizar una Donación", desc: "Si no sabés dónde llevar o a quién ayudar, hacé click acá", accion: "donacion", img: "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&q=80" },
-    { icon: "⭐", titulo: "Dejá tu reseña", desc: "Ayudá a otros a elegir dónde ayudar", link: "/mapa", img: "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&q=80", estrellas: true },
     { icon: "🏢", titulo: "Registrá tu Institución", desc: "Sumá tu organización al mapa. El registro es gratuito y verificado.", link: "/registrar", img: "https://images.unsplash.com/photo-1593113616828-6f22bca04804?w=600&q=80" },
     { icon: "📅", titulo: "Calendario Solidario", desc: "Colectas, ferias, jornadas de voluntariado y más eventos solidarios.", link: "/calendario", img: "https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=600&q=80", extraBtn: true },
     { icon: "💚", titulo: "Postulate para ser un Agente de Cambio", desc: "Dejanos tu postulación o registrate para recibir novedades de tu zona.", accion: "postulate", img: "https://raw.githubusercontent.com/emiliotv-ia/agentes-de-cambio/main/public/voluntarios.png" },
@@ -26,6 +24,36 @@ export default function LandingPage() {
   const handleCardClick = (item, e) => {
     if (item.accion === "donacion") { e.preventDefault(); setShowDonacion(true) }
     if (item.accion === "postulate") { e.preventDefault(); setShowUnite(true) }
+  }
+
+  const PanelHover = ({ titulo, texto, linkLabel, linkHref, accentColor = "#0D4F3C" }) => (
+    <div className="info-panel" style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, opacity: 0, pointerEvents: "none", transition: "opacity 0.2s ease" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+        <div style={{ width: 4, height: 22, background: accentColor, borderRadius: 4 }} />
+        <h3 style={{ fontSize: 16, fontWeight: 800, color: accentColor, margin: 0 }}>{titulo}</h3>
+      </div>
+      <p style={{ color: "#4B5563", fontSize: 13, lineHeight: 1.6, margin: "0 0 14px 0" }}>{texto}</p>
+      {linkLabel && <a href={linkHref} style={{ display: "inline-block", background: accentColor, color: "white", padding: "8px 16px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>{linkLabel} →</a>}
+    </div>
+  )
+
+  const ModalInfo = ({ show, onClose, titulo, texto, linkLabel, linkHref, accentColor = "#0D4F3C" }) => {
+    if (!show) return null
+    return (
+      <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 1000, padding: 16 }}>
+        <div style={{ background: "white", borderRadius: 16, padding: "24px 24px 32px", width: "100%", maxWidth: 500, boxShadow: "0 -8px 30px rgba(0,0,0,0.2)" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+            <div style={{ width: 4, height: 22, background: accentColor, borderRadius: 4 }} />
+            <h3 style={{ fontSize: 18, fontWeight: 800, color: accentColor, margin: 0 }}>{titulo}</h3>
+          </div>
+          <p style={{ color: "#4B5563", fontSize: 14, lineHeight: 1.65, margin: "0 0 20px 0" }}>{texto}</p>
+          <div style={{ display: "flex", gap: 10 }}>
+            {linkLabel && <a href={linkHref} style={{ flex: 1, background: accentColor, color: "white", padding: "13px", borderRadius: 10, fontWeight: 700, fontSize: 14, textDecoration: "none", textAlign: "center" }}>{linkLabel} →</a>}
+            <button onClick={onClose} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "13px", borderRadius: 10, fontWeight: 700, fontSize: 14, cursor: "pointer" }}>Cerrar</button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -60,12 +88,7 @@ export default function LandingPage() {
             onMouseLeave={e => { const p = e.currentTarget.querySelector('.como-funciona'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
           >
             <a href="/mapa"
-              onClick={e => {
-                if (window.matchMedia('(hover: none)').matches) {
-                  e.preventDefault()
-                  setShowComoFunciona(true)
-                }
-              }}
+              onClick={e => { if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); setShowComoFunciona(true) } }}
               style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
               <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" alt="Buscá en el mapa" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
@@ -76,7 +99,6 @@ export default function LandingPage() {
               </div>
               <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
             </a>
-            {/* PANEL HOVER - solo desktop */}
             <div className="como-funciona" style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, opacity: 0, pointerEvents: "none", transition: "opacity 0.2s ease" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
                 <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
@@ -101,7 +123,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* MODAL CÓMO FUNCIONA - solo mobile (touch) */}
+          {/* MODAL CÓMO FUNCIONA - mobile */}
           {showComoFunciona && (
             <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 1000, padding: 16 }}>
               <div style={{ background: "white", borderRadius: 16, padding: "24px 24px 32px", width: "100%", maxWidth: 500, boxShadow: "0 -8px 30px rgba(0,0,0,0.2)" }}>
@@ -133,7 +155,98 @@ export default function LandingPage() {
             </div>
           )}
 
-          {/* RESTO DE CARDS */}
+          {/* CARD 2: FILTRÁ POR TEMA */}
+          <div style={{ position: "relative" }}
+            onMouseEnter={e => { const p = e.currentTarget.querySelector('.filtrar-panel'); if(p) p.style.opacity = '1'; if(p) p.style.pointerEvents = 'auto'; }}
+            onMouseLeave={e => { const p = e.currentTarget.querySelector('.filtrar-panel'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
+          >
+            <a href="/mapa?lista=true"
+              onClick={e => { if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); setShowFiltrarInfo(true) } }}
+              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
+              <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&q=80" alt="Filtrá por tema" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
+              <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
+                <div style={{ fontSize: 24 }}>🔍</div>
+                <div style={{ fontWeight: 800, color: "white", fontSize: 17 }}>Filtrá por tema</div>
+                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Niños, animales, salud, educación y más</div>
+              </div>
+              <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
+            </a>
+            <div className="filtrar-panel" style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, opacity: 0, pointerEvents: "none", transition: "opacity 0.2s ease" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>🔍 Filtrá por tema</h3>
+              </div>
+              <p style={{ color: "#4B5563", fontSize: 13, lineHeight: 1.6, margin: "0 0 14px 0" }}>Con esta función verás todos los tipos de instituciones que hay en el mapa, así podés filtrar cuál o cuáles son de tu interés.</p>
+              <a href="/mapa?lista=true" style={{ display: "inline-block", background: "#0D4F3C", color: "white", padding: "8px 16px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>Ver categorías →</a>
+            </div>
+          </div>
+
+          {/* MODAL FILTRÁ POR TEMA - mobile */}
+          <ModalInfo
+            show={showFiltrarInfo}
+            onClose={() => setShowFiltrarInfo(false)}
+            titulo="🔍 Filtrá por tema"
+            texto="Con esta función verás todos los tipos de instituciones que hay en el mapa, así podés filtrar cuál o cuáles son de tu interés."
+            linkLabel="Ver categorías"
+            linkHref="/mapa?lista=true"
+          />
+
+          {/* CARD 3: DONACIÓN */}
+          {cards.slice(0, 1).map((item, i) => (
+            <a key={i} href={item.link || "#"}
+              onClick={item.accion ? (e) => handleCardClick(item, e) : undefined}
+              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", cursor: "pointer" }}>
+              <img src={item.img} alt={item.titulo} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
+              <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
+                <div style={{ fontSize: 24 }}>{item.icon}</div>
+                <div style={{ fontWeight: 800, color: "white", fontSize: 17, lineHeight: 1.2 }}>{item.titulo}</div>
+                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>{item.desc}</div>
+              </div>
+              <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
+            </a>
+          ))}
+
+          {/* CARD 4: DEJÁ TU RESEÑA */}
+          <div style={{ position: "relative" }}
+            onMouseEnter={e => { const p = e.currentTarget.querySelector('.resena-panel'); if(p) p.style.opacity = '1'; if(p) p.style.pointerEvents = 'auto'; }}
+            onMouseLeave={e => { const p = e.currentTarget.querySelector('.resena-panel'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
+          >
+            <a href="/mapa"
+              onClick={e => { if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); setShowResenaInfo(true) } }}
+              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
+              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&q=80" alt="Dejá tu reseña" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
+              <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
+                <div style={{ fontSize: 24 }}>⭐</div>
+                <div style={{ fontWeight: 800, color: "white", fontSize: 17 }}>Dejá tu reseña</div>
+                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Ayudá a otros a elegir dónde ayudar</div>
+                <div style={{ display: "flex", gap: 2, marginTop: 2 }}>{[1,2,3,4,5].map(n => <span key={n} style={{ fontSize: 14 }}>⭐</span>)}</div>
+              </div>
+              <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
+            </a>
+            <div className="resena-panel" style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, opacity: 0, pointerEvents: "none", transition: "opacity 0.2s ease" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
+                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>⭐ Dejá tu reseña</h3>
+              </div>
+              <p style={{ color: "#4B5563", fontSize: 13, lineHeight: 1.6, margin: "0 0 14px 0" }}>Buscá en el mapa la institución que conocés, y haciendo click en ella, podrás contarnos tu reseña y experiencia con ellos.</p>
+              <a href="/mapa" style={{ display: "inline-block", background: "#0D4F3C", color: "white", padding: "8px 16px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>Ir al mapa →</a>
+            </div>
+          </div>
+
+          {/* MODAL RESEÑA - mobile */}
+          <ModalInfo
+            show={showResenaInfo}
+            onClose={() => setShowResenaInfo(false)}
+            titulo="⭐ Dejá tu reseña"
+            texto="Buscá en el mapa la institución que conocés, y haciendo click en ella, podrás contarnos tu reseña y experiencia con ellos."
+            linkLabel="Ir al mapa"
+            linkHref="/mapa"
+          />
+
+          {/* RESTO DE CARDS (Registrá institución, Calendario, Postulate) */}
           {cards.slice(1).map((item, i) => {
             const isPostulate = item.accion === "postulate"
             const isCalendario = item.extraBtn
@@ -147,7 +260,6 @@ export default function LandingPage() {
                   <div style={{ fontSize: 24 }}>{item.icon}</div>
                   <div style={{ fontWeight: 800, color: "white", fontSize: 17, lineHeight: 1.2 }}>{item.titulo}</div>
                   <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>{item.desc}</div>
-                  {item.estrellas && <div style={{ display: "flex", gap: 2, marginTop: 2 }}>{[1,2,3,4,5].map(n => <span key={n} style={{ fontSize: 14 }}>⭐</span>)}</div>}
                   {isCalendario && (
                     <button onClick={e => { e.preventDefault(); e.stopPropagation(); setShowEvento(true) }}
                       style={{ marginTop: 6, background: "rgba(255,255,255,0.2)", color: "white", border: "1.5px solid rgba(255,255,255,0.5)", padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer", alignSelf: "flex-start" }}>
@@ -188,7 +300,7 @@ export default function LandingPage() {
               <input type="text" placeholder="Tu nombre *" value={agenteData.nombre} onChange={e => setAgenteData({...agenteData, nombre: e.target.value})} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
               <input type="email" placeholder="Tu email *" value={agenteData.email} onChange={e => setAgenteData({...agenteData, email: e.target.value})} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
               <input type="tel" placeholder="Teléfono" value={agenteData.telefono} onChange={e => setAgenteData({...agenteData, telefono: e.target.value})} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
-              <input type="text" placeholder="Localidad" value={agenteData.localidad} onChange={e => setAgenteData({...agenteData, localidad: e.target.value})} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }} />
+              <input type="text" placeholder="Localidad" value={agenteData.localidad} onChange={e => setAgenteData({...agenteData, localidad: e.target.value})} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14 }}  />
               <textarea placeholder="¿Por qué querés ser Agente de Cambio? (opcional)" value={agenteData.motivacion} onChange={e => setAgenteData({...agenteData, motivacion: e.target.value})} rows={3} style={{ padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical" }} />
               <div style={{ display: "flex", gap: 8 }}>
                 <button disabled={enviando} onClick={async () => {
