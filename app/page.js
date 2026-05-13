@@ -88,7 +88,7 @@ export default function LandingPage() {
             onMouseLeave={e => { const p = e.currentTarget.querySelector('.como-funciona'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
           >
             <a href="/mapa"
-              onClick={e => { if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); setShowComoFunciona(true) } }}
+              onClick={e => { e.preventDefault(); setShowComoFunciona(true) }}
               style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
               <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" alt="Buscá en el mapa" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
@@ -161,7 +161,7 @@ export default function LandingPage() {
             onMouseLeave={e => { const p = e.currentTarget.querySelector('.filtrar-panel'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
           >
             <a href="/mapa?lista=true"
-              onClick={e => { if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); setShowFiltrarInfo(true) } }}
+              onClick={e => { e.preventDefault(); setShowFiltrarInfo(true) }}
               style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
               <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&q=80" alt="Filtrá por tema" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
@@ -214,7 +214,7 @@ export default function LandingPage() {
             onMouseLeave={e => { const p = e.currentTarget.querySelector('.resena-panel'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
           >
             <a href="/mapa"
-              onClick={e => { if (window.matchMedia('(hover: none)').matches) { e.preventDefault(); setShowResenaInfo(true) } }}
+              onClick={e => { e.preventDefault(); setShowResenaInfo(true) }}
               style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
               <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&q=80" alt="Dejá tu reseña" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
