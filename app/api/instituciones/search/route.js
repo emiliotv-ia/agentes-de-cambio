@@ -11,7 +11,7 @@ export async function GET(request) {
     const localidad = searchParams.get('localidad')
     const tema = searchParams.get('tema')
 
-    let query = supabase.from('instituciones').select('*').eq('estado_verificacion', 'verificada').limit(50)
+    let query = supabase.from('instituciones').select('*').limit(50)
 
     if (localidad) query = query.eq('localidad', localidad)
     if (tema) query = query.or(`nombre.ilike.%${tema}%,descripcion.ilike.%${tema}%`)
