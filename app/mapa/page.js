@@ -308,7 +308,7 @@ export default function DondeSumo() {
             lng: parseFloat(i.longitud),
             categorias: i.categorias || [],
             tags: i.tags || [],
-            necesidades: i.necesidades_actuales || []
+            necesidades: Array.isArray(i.necesidades_actuales) ? i.necesidades_actuales : (i.necesidades_actuales ? [i.necesidades_actuales] : [])
           }))
           setInstituciones(adapted)
         }
