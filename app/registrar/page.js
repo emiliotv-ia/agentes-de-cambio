@@ -7,6 +7,9 @@ export default function RegistrarPage() {
   const [paso, setPaso] = useState(1)
   const [enviando, setEnviando] = useState(false)
   const [enviado, setEnviado] = useState(false)
+  const [solicitudId, setSolicitudId] = useState(null)
+  const [imagenes, setImagenes] = useState([])
+  const [subiendo, setSubiendo] = useState(false)
   const [form, setForm] = useState({
     nombre: "", direccion: "", localidad: "", latitud: "", longitud: "",
     nombre_encargado: "", telefono1: "", telefono2: "", whatsapp: "",
@@ -28,6 +31,7 @@ export default function RegistrarPage() {
       })
       const data = await res.json()
       if (data.success) {
+        setSolicitudId(data.solicitud?.id || null)
         setEnviado(true)
       } else {
         alert(`❌ Error: ${data.error}`)
@@ -39,12 +43,70 @@ export default function RegistrarPage() {
     }
   }
 
+  const handleImagenes = async (e) => {
+    const archivos = Array.from(e.target.files)
+    if (!archivos.length) return
+    setSubiendo(true)
+    const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    const nuevas = []
+    for (const archivo of archivos) {
+      const ext = archivo.name.split('.').pop()
+      const nombre = `${solicitudId || 'sin-id'}/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`
+      // Subir a Storage
+      const res = await fetch(`${SUPABASE_URL}/storage/v1/object/instituciones/${nombre}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${SUPABASE_KEY}`, 'apikey': SUPABASE_KEY, 'Content-Type': archivo.type },
+        body: archivo
+      })
+      if (res.ok) {
+        const url = `${SUPABASE_URL}/storage/v1/object/public/instituciones/${nombre}`
+        // Guardar en tabla
+        if (solicitudId) {
+          await fetch(`${SUPABASE_URL}/rest/v1/institucion_imagenes`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${SUPABASE_KEY}`, 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+            body: JSON.stringify({ solicitud_id: solicitudId, url })
+          })
+        }
+        nuevas.push(url)
+      }
+    }
+    setImagenes(prev => [...prev, ...nuevas])
+    setSubiendo(false)
+  }
+
   if (enviado) return (
-    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F0FDF4", padding: 24 }}>
-      <div style={{ background: "white", borderRadius: 20, padding: 40, textAlign: "center", maxWidth: 440, boxShadow: "0 4px 24px rgba(0,0,0,0.08)" }}>
+    <div style={{ minHeight: "100vh", background: "#F0FDF4", padding: 24, display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <div style={{ background: "white", borderRadius: 20, padding: 40, textAlign: "center", maxWidth: 520, width: "100%", boxShadow: "0 4px 24px rgba(0,0,0,0.08)", marginBottom: 24 }}>
         <div style={{ fontSize: 60, marginBottom: 16 }}>🎉</div>
         <h2 style={{ color: "#0D4F3C", fontFamily: "'Playfair Display', serif", fontSize: 24, margin: "0 0 12px 0" }}>¡Solicitud enviada!</h2>
         <p style={{ color: "#6B7280", fontSize: 14, lineHeight: 1.7, margin: "0 0 24px 0" }}>Recibimos tu solicitud de registro. Nuestro equipo la revisará y te contactaremos a la brevedad para verificar los datos.</p>
+
+        {/* Uploader de imágenes */}
+        <div style={{ background: "#F8FAF9", borderRadius: 16, padding: 24, border: "2px dashed #86EFAC", marginBottom: 24 }}>
+          <div style={{ fontSize: 36, marginBottom: 8 }}>📸</div>
+          <h3 style={{ color: "#0D4F3C", fontSize: 16, fontWeight: 700, margin: "0 0 8px 0" }}>Agregá fotos de tu institución</h3>
+          <p style={{ color: "#6B7280", fontSize: 13, margin: "0 0 16px 0" }}>Subí fotos del lugar, actividades, equipo... Ayuda a que más personas conozcan tu trabajo.</p>
+          <label style={{ display: "inline-block", background: "#0D4F3C", color: "white", padding: "10px 24px", borderRadius: 10, fontWeight: 700, cursor: "pointer", fontSize: 14 }}>
+            {subiendo ? "Subiendo..." : "📁 Seleccionar fotos"}
+            <input type="file" multiple accept="image/*" onChange={handleImagenes} style={{ display: "none" }} disabled={subiendo} />
+          </label>
+          <p style={{ color: "#9CA3AF", fontSize: 12, margin: "10px 0 0 0" }}>JPG, PNG, WEBP — múltiples archivos permitidos</p>
+        </div>
+
+        {/* Preview de imágenes subidas */}
+        {imagenes.length > 0 && (
+          <div style={{ marginBottom: 24 }}>
+            <p style={{ color: "#0D4F3C", fontWeight: 700, fontSize: 14, margin: "0 0 12px 0" }}>✅ {imagenes.length} foto{imagenes.length > 1 ? "s" : ""} subida{imagenes.length > 1 ? "s" : ""}</p>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+              {imagenes.map((url, i) => (
+                <img key={i} src={url} alt={`Foto ${i+1}`} style={{ width: "100%", aspectRatio: "1", objectFit: "cover", borderRadius: 8 }} />
+              ))}
+            </div>
+          </div>
+        )}
+
         <a href="/" style={{ display: "inline-block", background: "#0D4F3C", color: "white", padding: "12px 28px", borderRadius: 10, fontWeight: 700, textDecoration: "none" }}>Volver al inicio</a>
       </div>
     </div>
