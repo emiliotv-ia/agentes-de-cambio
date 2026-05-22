@@ -240,6 +240,7 @@ export default function RegistrarPage() {
                     ))}
                   </div>
                 </div>
+                <div>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>¿A qué se dedican? *</label>
                   <textarea required value={form.descripcion} onChange={e => update('descripcion', e.target.value)} placeholder="Describí brevemente qué hace tu institución y a quiénes va dirigida..." rows={4} style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical", boxSizing: "border-box" }} />
                 </div>
