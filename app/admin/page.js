@@ -9,6 +9,7 @@ const TABS = [
   { id: 'mensajes', label: '✉️ Mensajes', desc: 'Mensajes recibidos' },
   { id: 'resenas', label: '⭐ Reseñas', desc: 'Reseñas pendientes de moderación' },
   { id: 'instituciones', label: '📝 Instituciones', desc: 'Editar info de instituciones activas' },
+  { id: 'calendario', label: '📅 Calendario', desc: 'Gestionar eventos solidarios' },
 ]
 
 export default function AdminPage() {
@@ -20,6 +21,9 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false)
   const [editInst, setEditInst] = useState(null)
   const [showNueva, setShowNueva] = useState(false)
+  const [editEvento, setEditEvento] = useState(null)
+  const [showNuevoEvento, setShowNuevoEvento] = useState(false)
+  const [nuevoEvento, setNuevoEvento] = useState({ titulo: '', descripcion: '', fecha: '', hora: '', lugar: '', localidad: '', organizador: '', contacto: '' })
   const [nuevaInst, setNuevaInst] = useState({
     nombre: "", slug: "", descripcion: "", direccion: "", localidad: "",
     latitud: "", longitud: "", telefono: "", email: "", whatsapp: "",
@@ -35,9 +39,15 @@ export default function AdminPage() {
   const fetchData = async (t) => {
     setLoading(true)
     try {
-      const res = await fetch(`/api/admin?tabla=${t}`)
-      const json = await res.json()
-      setData(d => ({ ...d, [t]: json.data || [] }))
+      if (t === 'calendario') {
+        const res = await fetch('/api/admin/eventos')
+        const json = await res.json()
+        setData(d => ({ ...d, calendario: json.eventos || [] }))
+      } else {
+        const res = await fetch(`/api/admin?tabla=${t}`)
+        const json = await res.json()
+        setData(d => ({ ...d, [t]: json.data || [] }))
+      }
     } catch (e) { console.error(e) }
     finally { setLoading(false) }
   }
@@ -79,6 +89,31 @@ export default function AdminPage() {
     if (!confirm(`¿Seguro que querés eliminar "${nombre}"? Esta acción no se puede deshacer.`)) return
     await fetch('/api/admin/institucion', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
     fetchData('instituciones')
+  }
+
+  const crearEvento = async () => {
+    if (!nuevoEvento.titulo || !nuevoEvento.fecha) { alert('Título y fecha son requeridos'); return }
+    await fetch('/api/admin/eventos', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(nuevoEvento) })
+    setShowNuevoEvento(false)
+    setNuevoEvento({ titulo: '', descripcion: '', fecha: '', hora: '', lugar: '', localidad: '', organizador: '', contacto: '' })
+    fetchData('calendario')
+  }
+
+  const guardarEvento = async () => {
+    await fetch('/api/admin/eventos', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editEvento) })
+    setEditEvento(null)
+    fetchData('calendario')
+  }
+
+  const eliminarEvento = async (id, titulo) => {
+    if (!confirm(`¿Eliminar "${titulo}"?`)) return
+    await fetch('/api/admin/eventos', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) })
+    fetchData('calendario')
+  }
+
+  const cambiarEstadoEvento = async (id, estado) => {
+    await fetch('/api/admin/eventos', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id, estado }) })
+    fetchData('calendario')
   }
 
   if (!auth) return (
@@ -297,6 +332,74 @@ export default function AdminPage() {
                 )}
               </div>
             ))}
+
+            {tab === 'calendario' && (
+              <>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                  <h3 style={{ margin: 0, color: '#0D4F3C', fontSize: 16 }}>Eventos solidarios</h3>
+                  <button onClick={() => setShowNuevoEvento(!showNuevoEvento)} style={{ background: '#0D4F3C', color: 'white', border: 'none', padding: '9px 18px', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>+ Nuevo evento</button>
+                </div>
+                {showNuevoEvento && (
+                  <div style={{ background: 'white', borderRadius: 14, padding: 20, boxShadow: '0 2px 10px rgba(0,0,0,0.05)', marginBottom: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                    <h4 style={{ margin: '0 0 8px 0', color: '#0D4F3C' }}>➕ Nuevo evento</h4>
+                    <input placeholder="Título *" value={nuevoEvento.titulo} onChange={e => setNuevoEvento({...nuevoEvento, titulo: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                    <textarea placeholder="Descripción" value={nuevoEvento.descripcion} onChange={e => setNuevoEvento({...nuevoEvento, descripcion: e.target.value})} rows={3} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13, resize: 'vertical' }} />
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                      <input type="date" value={nuevoEvento.fecha} onChange={e => setNuevoEvento({...nuevoEvento, fecha: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                      <input type="time" value={nuevoEvento.hora} onChange={e => setNuevoEvento({...nuevoEvento, hora: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                      <input placeholder="Lugar" value={nuevoEvento.lugar} onChange={e => setNuevoEvento({...nuevoEvento, lugar: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                      <input placeholder="Localidad" value={nuevoEvento.localidad} onChange={e => setNuevoEvento({...nuevoEvento, localidad: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                      <input placeholder="Organizador" value={nuevoEvento.organizador} onChange={e => setNuevoEvento({...nuevoEvento, organizador: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                      <input placeholder="Contacto" value={nuevoEvento.contacto} onChange={e => setNuevoEvento({...nuevoEvento, contacto: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                    </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button onClick={crearEvento} style={{ flex: 1, background: '#0D4F3C', color: 'white', border: 'none', padding: '10px', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>✅ Crear evento</button>
+                      <button onClick={() => setShowNuevoEvento(false)} style={{ flex: 1, background: '#F3F4F6', color: '#374151', border: 'none', padding: '10px', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>Cancelar</button>
+                    </div>
+                  </div>
+                )}
+                {(data.calendario || []).map(ev => (
+                  <div key={ev.id} style={{ background: 'white', borderRadius: 14, padding: '18px 22px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)' }}>
+                    {editEvento?.id === ev.id ? (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                        <h4 style={{ margin: '0 0 8px 0', color: '#0D4F3C' }}>Editando: {ev.titulo}</h4>
+                        <input value={editEvento.titulo || ''} onChange={e => setEditEvento({...editEvento, titulo: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                        <textarea value={editEvento.descripcion || ''} onChange={e => setEditEvento({...editEvento, descripcion: e.target.value})} rows={3} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13, resize: 'vertical' }} />
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                          <input type="date" value={editEvento.fecha || ''} onChange={e => setEditEvento({...editEvento, fecha: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                          <input type="time" value={editEvento.hora || ''} onChange={e => setEditEvento({...editEvento, hora: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                          <input placeholder="Lugar" value={editEvento.lugar || ''} onChange={e => setEditEvento({...editEvento, lugar: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                          <input placeholder="Localidad" value={editEvento.localidad || ''} onChange={e => setEditEvento({...editEvento, localidad: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                          <input placeholder="Organizador" value={editEvento.organizador || ''} onChange={e => setEditEvento({...editEvento, organizador: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                          <input placeholder="Contacto" value={editEvento.contacto || ''} onChange={e => setEditEvento({...editEvento, contacto: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }} />
+                        </div>
+                        <select value={editEvento.estado || 'activo'} onChange={e => setEditEvento({...editEvento, estado: e.target.value})} style={{ padding: '10px', borderRadius: 8, border: '1px solid #E5E7EB', fontSize: 13 }}>
+                          <option value="activo">✅ Activo</option>
+                          <option value="pendiente">⏳ Pendiente</option>
+                          <option value="cancelado">❌ Cancelado</option>
+                        </select>
+                        <div style={{ display: 'flex', gap: 8 }}>
+                          <button onClick={guardarEvento} style={{ flex: 1, background: '#0D4F3C', color: 'white', border: 'none', padding: '10px', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>💾 Guardar</button>
+                          <button onClick={() => setEditEvento(null)} style={{ flex: 1, background: '#F3F4F6', color: '#374151', border: 'none', padding: '10px', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 13 }}>Cancelar</button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+                        <div>
+                          <h3 style={{ margin: '0 0 4px 0', fontSize: 15, color: '#111827' }}>{ev.titulo}</h3>
+                          <p style={{ margin: '0 0 4px 0', fontSize: 12, color: '#6B7280' }}>📅 {ev.fecha}{ev.hora ? ' · ' + ev.hora : ''}{ev.lugar ? ' · ' + ev.lugar : ''}{ev.localidad ? ', ' + ev.localidad : ''}</p>
+                          <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: ev.estado === 'activo' ? '#D1FAE5' : ev.estado === 'pendiente' ? '#FEF3C7' : '#FEE2E2', color: ev.estado === 'activo' ? '#065F46' : ev.estado === 'pendiente' ? '#78350F' : '#991B1B', fontWeight: 700 }}>{ev.estado}</span>
+                        </div>
+                        <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
+                          <button onClick={() => setEditEvento(ev)} style={{ background: '#F0FDF4', color: '#0D4F3C', border: '1.5px solid #86EFAC', padding: '7px 14px', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 12 }}>✏️ Editar</button>
+                          <button onClick={() => eliminarEvento(ev.id, ev.titulo)} style={{ background: '#FEE2E2', color: '#991B1B', border: '1.5px solid #FCA5A5', padding: '7px 14px', borderRadius: 8, fontWeight: 700, cursor: 'pointer', fontSize: 12 }}>🗑️</button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </>
+            )}
 
           </div>
         )}
