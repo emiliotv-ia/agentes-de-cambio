@@ -3,6 +3,24 @@ import { useState } from 'react'
 
 const TIPOS_AYUDA = ["Alimentos", "Ropa y calzado", "Útiles escolares", "Medicamentos", "Voluntariado", "Dinero", "Materiales de construcción", "Juguetes", "Muebles", "Otros"]
 
+const CATEGORIAS = [
+  { id: 1, nombre: "Niñez y Adolescencia", icono: "👶" },
+  { id: 2, nombre: "Adultos Mayores", icono: "🤍" },
+  { id: 3, nombre: "Animales", icono: "🐾" },
+  { id: 4, nombre: "Medio Ambiente", icono: "🌿" },
+  { id: 5, nombre: "Alimentación", icono: "🍽️" },
+  { id: 6, nombre: "Discapacidad", icono: "♿" },
+  { id: 7, nombre: "Salud", icono: "🏥" },
+  { id: 8, nombre: "Educación", icono: "📚" },
+  { id: 9, nombre: "Vivienda y Hábitat", icono: "🏠" },
+  { id: 10, nombre: "Género y Diversidad", icono: "🏳️‍🌈" },
+  { id: 11, nombre: "Coaching para ONGs", icono: "💡" },
+  { id: 12, nombre: "Emergencias", icono: "🚨" },
+  { id: 13, nombre: "Situación de Calle", icono: "🏕️" },
+  { id: 14, nombre: "Adicciones", icono: "🛡️" },
+  { id: 15, nombre: "Cultura y Deporte", icono: "🏆" },
+]
+
 export default function RegistrarPage() {
   const [paso, setPaso] = useState(1)
   const [enviando, setEnviando] = useState(false)
@@ -14,11 +32,12 @@ export default function RegistrarPage() {
     nombre: "", direccion: "", localidad: "", latitud: "", longitud: "",
     nombre_encargado: "", telefono1: "", telefono2: "", whatsapp: "",
     tiene_personeria_juridica: false, respaldo_legal: "",
-    descripcion: "", historia: "", tipo_ayuda: [], necesidades: ""
+    descripcion: "", historia: "", tipo_ayuda: [], necesidades: "", categorias: []
   })
 
   const update = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const toggleAyuda = (t) => update('tipo_ayuda', form.tipo_ayuda.includes(t) ? form.tipo_ayuda.filter(x => x !== t) : [...form.tipo_ayuda, t])
+  const toggleCategoria = (id) => update('categorias', form.categorias.includes(id) ? form.categorias.filter(x => x !== id) : [...form.categorias, id])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -211,6 +230,16 @@ export default function RegistrarPage() {
               <h2 style={{ color: "#0D4F3C", margin: "0 0 20px 0", fontSize: 20 }}>📝 Descripción e Historia</h2>
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                 <div>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 10 }}>¿En qué categorías se encuadra tu institución? *</label>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                    {CATEGORIAS.map(cat => (
+                      <label key={cat.id} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", padding: "8px 10px", borderRadius: 8, border: `1px solid ${form.categorias.includes(cat.id) ? '#0D4F3C' : '#E5E7EB'}`, background: form.categorias.includes(cat.id) ? '#F0FDF4' : 'white' }}>
+                        <input type="checkbox" checked={form.categorias.includes(cat.id)} onChange={() => toggleCategoria(cat.id)} style={{ width: 16, height: 16 }} />
+                        <span style={{ fontSize: 13, color: "#374151" }}>{cat.icono} {cat.nombre}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>¿A qué se dedican? *</label>
                   <textarea required value={form.descripcion} onChange={e => update('descripcion', e.target.value)} placeholder="Describí brevemente qué hace tu institución y a quiénes va dirigida..." rows={4} style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, resize: "vertical", boxSizing: "border-box" }} />
                 </div>
