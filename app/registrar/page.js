@@ -222,7 +222,13 @@ export default function RegistrarPage() {
                   <p style={{ color: "#9CA3AF", fontSize: 12, margin: "6px 0 0 0" }}>Abrí el mapa y hacé click en la ubicación exacta de tu institución</p>
                 </div>
               </div>
-              <button type="button" onClick={() => setPaso(2)} style={{ marginTop: 24, width: "100%", background: "#0D4F3C", color: "white", border: "none", padding: "13px", borderRadius: 10, fontWeight: 700, cursor: "pointer", fontSize: 15 }}>Siguiente →</button>
+              <button type="button" onClick={() => {
+                if (!form.latitud || !form.longitud) {
+                  alert("📍 Por favor marcá la ubicación de tu institución en el mapa antes de continuar.")
+                  return
+                }
+                setPaso(2)
+              }} style={{ marginTop: 24, width: "100%", background: form.latitud ? "#0D4F3C" : "#9CA3AF", color: "white", border: "none", padding: "13px", borderRadius: 10, fontWeight: 700, cursor: form.latitud ? "pointer" : "not-allowed", fontSize: 15 }}>Siguiente →</button>
             </div>
           )}
 
