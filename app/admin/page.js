@@ -141,7 +141,7 @@ export default function AdminPage() {
     </div>
   )
 
-  const items = data[tab] || []
+  const items = tab === 'solicitudes' ? (data[tab] || []).filter(s => s.estado === 'pendiente') : (data[tab] || [])
 
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", background: "#F8FAF9", minHeight: "100vh" }}>
