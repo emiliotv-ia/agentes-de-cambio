@@ -67,7 +67,12 @@ export default function AdminPage() {
   }
 
   const guardarInstitucion = async () => {
-    await fetch('/api/admin/institucion', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(editInst) })
+    const payload = {
+      ...editInst,
+      latitud: editInst.latitud ? parseFloat(editInst.latitud) : null,
+      longitud: editInst.longitud ? parseFloat(editInst.longitud) : null,
+    }
+    await fetch('/api/admin/institucion', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
     setEditInst(null)
     fetchData('instituciones')
   }
@@ -305,6 +310,10 @@ export default function AdminPage() {
                     <input placeholder="WhatsApp" value={editInst.whatsapp || ''} onChange={e => setEditInst({...editInst, whatsapp: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }} />
                     <input placeholder="Instagram" value={editInst.instagram || ''} onChange={e => setEditInst({...editInst, instagram: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }} />
                     <input type="number" placeholder="Año de fundación" value={editInst.anio_fundacion || ''} onChange={e => setEditInst({...editInst, anio_fundacion: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }} />
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                      <input placeholder="Latitud (ej: -27.4414)" value={editInst.latitud || ''} onChange={e => setEditInst({...editInst, latitud: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }} />
+                      <input placeholder="Longitud (ej: -59.0272)" value={editInst.longitud || ''} onChange={e => setEditInst({...editInst, longitud: e.target.value})} style={{ padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }} />
+                    </div>
                     <div>
                       <label style={{ fontSize: 12, fontWeight: 600, color: "#374151", display: "block", marginBottom: 4 }}>Estado de verificación</label>
                       <select value={editInst.estado_verificacion || 'en_proceso'} onChange={e => setEditInst({...editInst, estado_verificacion: e.target.value})} style={{ width: "100%", padding: "10px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 13 }}>
