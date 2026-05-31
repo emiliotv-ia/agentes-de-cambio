@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 const TIPOS_AYUDA = ["Alimentos", "Ropa y calzado", "Útiles escolares", "Medicamentos", "Voluntariado", "Dinero", "Materiales de construcción", "Juguetes", "Muebles", "Otros"]
 
@@ -34,6 +34,54 @@ export default function RegistrarPage() {
     tiene_personeria_juridica: false, respaldo_legal: "",
     descripcion: "", historia: "", tipo_ayuda: [], necesidades: "", categorias: []
   })
+
+  const [showMapPicker, setShowMapPicker] = useState(false)
+  const mapPickerRef = useRef(null)
+  const mapPickerInstance = useRef(null)
+  const markerRef = useRef(null)
+
+  useEffect(() => {
+    if (!showMapPicker) return
+    const timer = setTimeout(() => {
+      if (!mapPickerRef.current || mapPickerInstance.current) return
+      const loadLeaflet = () => new Promise(resolve => {
+        if (window.L) return resolve()
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css'
+        document.head.appendChild(link)
+        const script = document.createElement('script')
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js'
+        script.onload = resolve
+        document.head.appendChild(script)
+      })
+      loadLeaflet().then(() => {
+        const L = window.L
+        const initLat = form.latitud ? parseFloat(form.latitud) : -27.4514
+        const initLng = form.longitud ? parseFloat(form.longitud) : -59.0088
+        const map = L.map(mapPickerRef.current, { center: [initLat, initLng], zoom: 13 })
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map)
+        if (form.latitud && form.longitud) {
+          markerRef.current = L.marker([initLat, initLng]).addTo(map)
+        }
+        map.on('click', (e) => {
+          const { lat, lng } = e.latlng
+          if (markerRef.current) markerRef.current.remove()
+          markerRef.current = L.marker([lat, lng]).addTo(map)
+          setForm(f => ({ ...f, latitud: lat.toFixed(6), longitud: lng.toFixed(6) }))
+        })
+        mapPickerInstance.current = map
+      })
+    }, 100)
+    return () => {
+      clearTimeout(timer)
+      if (mapPickerInstance.current) {
+        mapPickerInstance.current.remove()
+        mapPickerInstance.current = null
+        markerRef.current = null
+      }
+    }
+  }, [showMapPicker])
 
   const update = (k, v) => setForm(f => ({ ...f, [k]: v }))
   const toggleAyuda = (t) => update('tipo_ayuda', form.tipo_ayuda.includes(t) ? form.tipo_ayuda.filter(x => x !== t) : [...form.tipo_ayuda, t])
@@ -166,17 +214,13 @@ export default function RegistrarPage() {
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Localidad *</label>
                   <input required value={form.localidad} onChange={e => update('localidad', e.target.value)} placeholder="Ej: Resistencia" style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, boxSizing: "border-box" }} />
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                  <div>
-                    <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Latitud (opcional)</label>
-                    <input value={form.latitud} onChange={e => update('latitud', e.target.value)} placeholder="-27.4414" style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, boxSizing: "border-box" }} />
-                  </div>
-                  <div>
-                    <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Longitud (opcional)</label>
-                    <input value={form.longitud} onChange={e => update('longitud', e.target.value)} placeholder="-59.0272" style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, boxSizing: "border-box" }} />
-                  </div>
+                <div>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 8 }}>📍 Ubicación en el mapa</label>
+                  <button type="button" onClick={() => setShowMapPicker(true)} style={{ width: "100%", padding: "12px", borderRadius: 8, border: "2px dashed #0D4F3C", background: form.latitud ? "#F0FDF4" : "white", color: "#0D4F3C", fontWeight: 700, cursor: "pointer", fontSize: 14 }}>
+                    {form.latitud ? `✅ Ubicación marcada (${parseFloat(form.latitud).toFixed(4)}, ${parseFloat(form.longitud).toFixed(4)})` : "🗺️ Hacer click para marcar en el mapa"}
+                  </button>
+                  <p style={{ color: "#9CA3AF", fontSize: 12, margin: "6px 0 0 0" }}>Abrí el mapa y hacé click en la ubicación exacta de tu institución</p>
                 </div>
-                <p style={{ color: "#9CA3AF", fontSize: 12, margin: 0 }}>💡 Si no sabés las coordenadas, buscá tu dirección en Google Maps y copiá los números del link</p>
               </div>
               <button type="button" onClick={() => setPaso(2)} style={{ marginTop: 24, width: "100%", background: "#0D4F3C", color: "white", border: "none", padding: "13px", borderRadius: 10, fontWeight: 700, cursor: "pointer", fontSize: 15 }}>Siguiente →</button>
             </div>
@@ -295,6 +339,29 @@ export default function RegistrarPage() {
           )}
         </form>
       </div>
+      {showMapPicker && (
+        <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 10000, padding: 16 }}>
+          <div style={{ background: "white", borderRadius: 16, width: "100%", maxWidth: 640, boxShadow: "0 20px 60px rgba(0,0,0,0.4)", overflow: "hidden" }}>
+            <div style={{ background: "linear-gradient(135deg, #0D4F3C, #2D8B6A)", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div>
+                <h3 style={{ color: "white", margin: 0, fontSize: 16, fontWeight: 700 }}>🗺️ Marcá la ubicación</h3>
+                <p style={{ color: "rgba(255,255,255,0.8)", margin: "4px 0 0 0", fontSize: 12 }}>Hacé click en el mapa para colocar el pin de tu institución</p>
+              </div>
+              <button onClick={() => setShowMapPicker(false)} style={{ background: "rgba(255,255,255,0.2)", border: "none", color: "white", width: 32, height: 32, borderRadius: "50%", cursor: "pointer", fontSize: 18 }}>×</button>
+            </div>
+            <div ref={mapPickerRef} style={{ width: "100%", height: 400 }} />
+            <div style={{ padding: "14px 20px", display: "flex", gap: 10, alignItems: "center" }}>
+              {form.latitud
+                ? <span style={{ flex: 1, fontSize: 13, color: "#059669", fontWeight: 600 }}>✅ Pin colocado en ({parseFloat(form.latitud).toFixed(5)}, {parseFloat(form.longitud).toFixed(5)})</span>
+                : <span style={{ flex: 1, fontSize: 13, color: "#9CA3AF" }}>Todavía no marcaste ningún punto...</span>
+              }
+              <button type="button" onClick={() => setShowMapPicker(false)} disabled={!form.latitud} style={{ background: form.latitud ? "#0D4F3C" : "#E5E7EB", color: form.latitud ? "white" : "#9CA3AF", border: "none", padding: "10px 24px", borderRadius: 8, fontWeight: 700, cursor: form.latitud ? "pointer" : "not-allowed", fontSize: 14 }}>
+                Confirmar ubicación
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

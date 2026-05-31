@@ -6,35 +6,36 @@ const supabase = createClient(
 )
 
 export async function GET() {
-  try {
-    const { data, error } = await supabase
-      .from('eventos')
-      .select('*')
-      .eq('estado', 'activo')
-      .gte('fecha', new Date().toISOString().split('T')[0])
-      .order('fecha', { ascending: true })
-      .limit(20)
-
-    if (error) return Response.json({ error: error.message }, { status: 400 })
-    return Response.json({ success: true, eventos: data || [] })
-  } catch (err) {
-    return Response.json({ error: err.message }, { status: 500 })
-  }
+  const { data, error } = await supabase
+    .from('eventos')
+    .select('*')
+    .order('fecha', { ascending: false })
+  if (error) return Response.json({ error: error.message }, { status: 400 })
+  return Response.json({ eventos: data || [] })
 }
 
 export async function POST(request) {
-  try {
-    const { titulo, descripcion, fecha, hora, lugar, localidad, organizador, contacto } = await request.json()
-    if (!titulo || !descripcion || !fecha) return Response.json({ error: 'Título, descripción y fecha son requeridos' }, { status: 400 })
+  const body = await request.json()
+  const { titulo, descripcion, fecha, hora, lugar, localidad, organizador, contacto } = body
+  if (!titulo || !fecha) return Response.json({ error: 'Título y fecha requeridos' }, { status: 400 })
+  const { data, error } = await supabase.from('eventos').insert([{ titulo, descripcion, fecha, hora: hora || null, lugar: lugar || null, localidad: localidad || null, organizador: organizador || null, contacto: contacto || null, estado: 'activo' }]).select()
+  if (error) return Response.json({ error: error.message }, { status: 400 })
+  return Response.json({ success: true, evento: data?.[0] }, { status: 201 })
+}
 
-    const { data, error } = await supabase
-      .from('eventos')
-      .insert([{ titulo, descripcion, fecha, hora: hora || null, lugar: lugar || null, localidad: localidad || null, organizador: organizador || null, contacto: contacto || null, estado: 'pendiente' }])
-      .select()
+export async function PUT(request) {
+  const body = await request.json()
+  const { id, ...fields } = body
+  if (!id) return Response.json({ error: 'ID requerido' }, { status: 400 })
+  const { error } = await supabase.from('eventos').update(fields).eq('id', id)
+  if (error) return Response.json({ error: error.message }, { status: 400 })
+  return Response.json({ success: true })
+}
 
-    if (error) return Response.json({ error: error.message }, { status: 400 })
-    return Response.json({ success: true, evento: data?.[0] }, { status: 201 })
-  } catch (err) {
-    return Response.json({ error: err.message }, { status: 500 })
-  }
+export async function DELETE(request) {
+  const { id } = await request.json()
+  if (!id) return Response.json({ error: 'ID requerido' }, { status: 400 })
+  const { error } = await supabase.from('eventos').delete().eq('id', id)
+  if (error) return Response.json({ error: error.message }, { status: 400 })
+  return Response.json({ success: true })
 }
