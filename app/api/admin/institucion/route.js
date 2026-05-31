@@ -49,13 +49,15 @@ export async function DELETE(request) {
 export async function PUT(request) {
   try {
     const body = await request.json()
-    const { id, descripcion, historia, responsables, dirigido_a, whatsapp, instagram, anio_fundacion, estado_verificacion } = body
+    const { id, descripcion, historia, responsables, dirigido_a, whatsapp, instagram, anio_fundacion, estado_verificacion, latitud, longitud } = body
 
     const { error } = await supabase
       .from('instituciones')
       .update({
         descripcion, historia, responsables, dirigido_a,
         whatsapp, instagram,
+        latitud: latitud ? parseFloat(latitud) : null,
+        longitud: longitud ? parseFloat(longitud) : null,
         anio_fundacion: anio_fundacion ? parseInt(anio_fundacion) : null,
         estado_verificacion: estado_verificacion || 'en_proceso',
         updated_at: new Date().toISOString()
