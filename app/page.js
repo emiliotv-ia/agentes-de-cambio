@@ -106,7 +106,7 @@ export default function LandingPage() {
             <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 24px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
               <div style={{ fontSize: 28 }}>💚</div>
               <div style={{ fontWeight: 900, color: "white", fontSize: 20, lineHeight: 1.2 }}>Quiero ser voluntario</div>
-              <div style={{ color: "#86EFAC", fontSize: 13, fontWeight: 600 }}>Sumate a las organizaciones que te necesitan</div>
+              <div style={{ color: "#86EFAC", fontSize: 13, fontWeight: 600 }}>Postulate para ser Agente De Cambio</div>
             </div>
             <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 10, padding: "8px 12px", color: "white", fontSize: 18, fontWeight: 700 }}>→</div>
           </a>
@@ -119,7 +119,7 @@ export default function LandingPage() {
             <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 24px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
               <div style={{ fontSize: 28 }}>🏢</div>
               <div style={{ fontWeight: 900, color: "white", fontSize: 20, lineHeight: 1.2 }}>Tengo una institución</div>
-              <div style={{ color: "#86EFAC", fontSize: 13, fontWeight: 600 }}>Registrá tu ONG y aparecé en el mapa — gratis</div>
+              <div style={{ color: "#86EFAC", fontSize: 13, fontWeight: 600 }}>Registrá tu ONG y aparecé en el mapa — GRATIS</div>
             </div>
             <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 10, padding: "8px 12px", color: "white", fontSize: 18, fontWeight: 700 }}>→</div>
           </a>
@@ -131,39 +131,36 @@ export default function LandingPage() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
 
             {/* Mapa */}
-            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, height: 80, borderRadius: 12, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", padding: "0 12px", textAlign: "center" }}>
               <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
-              <span style={{ position: "relative", zIndex: 1 }}>🗺️ Ver el mapa</span>
+              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.75)" }} />
+              <span style={{ position: "relative", zIndex: 1, fontSize: 14, fontWeight: 700 }}>🗺️ Ver el mapa</span>
+              <span style={{ position: "relative", zIndex: 1, fontSize: 11, opacity: 0.9, lineHeight: 1.3 }}>Encontrá en tu zona donde ayudar</span>
             </a>
 
             {/* Calendario */}
-            <a href="/calendario" style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+            <a href="/calendario" style={{ position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, height: 80, borderRadius: 12, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", padding: "0 12px", textAlign: "center" }}>
               <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
-              <span style={{ position: "relative", zIndex: 1 }}>📅 Calendario solidario</span>
+              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.75)" }} />
+              <span style={{ position: "relative", zIndex: 1, fontSize: 14, fontWeight: 700 }}>📅 Calendario Solidario</span>
+              <span style={{ position: "relative", zIndex: 1, fontSize: 11, opacity: 0.9, lineHeight: 1.3 }}>Ver y registrar Eventos Solidarios</span>
             </a>
 
             {/* Reseña */}
-            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, height: 80, borderRadius: 12, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", padding: "0 12px", textAlign: "center" }}>
               <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
-              <span style={{ position: "relative", zIndex: 1 }}>⭐ Dejá tu reseña</span>
+              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.75)" }} />
+              <span style={{ position: "relative", zIndex: 1, fontSize: 14, fontWeight: 700 }}>⭐ Dejá tu Reseña</span>
+              <span style={{ position: "relative", zIndex: 1, fontSize: 11, opacity: 0.9, lineHeight: 1.3 }}>Comentanos sobre las instituciones que conocés</span>
             </a>
 
             {/* Filtrar */}
-            <a href="/mapa?lista=true" style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+            <a href="/mapa?lista=true" style={{ position: "relative", overflow: "hidden", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, height: 80, borderRadius: 12, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", padding: "0 12px", textAlign: "center" }}>
               <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
-              <span style={{ position: "relative", zIndex: 1 }}>🔍 Filtrar por tema</span>
+              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.75)" }} />
+              <span style={{ position: "relative", zIndex: 1, fontSize: 14, fontWeight: 700 }}>🔍 Filtrar por tema</span>
+              <span style={{ position: "relative", zIndex: 1, fontSize: 11, opacity: 0.9, lineHeight: 1.3 }}>Encontrá rápido al lugar que querés ayudar</span>
             </a>
-
-            {/* Publicar evento — ocupa las 2 columnas */}
-            <button onClick={() => setShowEvento(true)} style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, color: "white", border: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", cursor: "pointer", gridColumn: "1 / -1" }}>
-              <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-              <div style={{ position: "absolute", inset: 0, background: "rgba(26,60,40,0.75)" }} />
-              <span style={{ position: "relative", zIndex: 1 }}>➕ Publicar evento solidario</span>
-            </button>
 
           </div>
         </div>
