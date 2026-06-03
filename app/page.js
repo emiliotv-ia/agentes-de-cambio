@@ -75,202 +75,66 @@ export default function LandingPage() {
         </div>
       </div>
 
+      {/* ── SECCIÓN PRINCIPAL: ¿Cómo querés ayudar? ── */}
       <div style={{ maxWidth: 700, margin: "0 auto", padding: "44px 24px 0" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
           <div style={{ width: 4, height: 32, background: "#0D4F3C", borderRadius: 4 }} />
-          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Qué podés hacer?</h2>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Cómo querés ayudar?</h2>
         </div>
+
+        {/* 3 CTAs GRANDES */}
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
 
-          {/* CARD 1: BUSCÁ EN EL MAPA */}
-          <div style={{ position: "relative" }}
-            onMouseEnter={e => { const p = e.currentTarget.querySelector('.como-funciona'); if(p) p.style.opacity = '1'; if(p) p.style.pointerEvents = 'auto'; }}
-            onMouseLeave={e => { const p = e.currentTarget.querySelector('.como-funciona'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
-          >
-            <a href="/mapa"
-              onClick={e => { e.preventDefault(); setShowComoFunciona(true) }}
-              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
-              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&q=80" alt="Buscá en el mapa" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
-              <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
-                <div style={{ fontSize: 24 }}>🗺️</div>
-                <div style={{ fontWeight: 800, color: "white", fontSize: 17 }}>Buscá en el mapa</div>
-                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Descubrí instituciones cerca tuyo</div>
-              </div>
-              <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
-            </a>
-            <div className="como-funciona" style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, opacity: 0, pointerEvents: "none", transition: "opacity 0.2s ease" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-                <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
-                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Cómo funciona?</h3>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {[
-                  { paso: "1", icon: "🗺️", titulo: "Encontrá una institución", desc: "Buscá en el mapa o filtrá por categoría." },
-                  { paso: "2", icon: "🚚", titulo: "Registrá tu donación", desc: "Describí qué tenés para ofrecer y dejá tus datos." },
-                  { paso: "3", icon: "📧", titulo: "La institución te contacta", desc: "Se ponen en contacto para coordinar. ¡Así de simple!" },
-                  { paso: "4", icon: "💚", titulo: "El impacto es real", desc: "Tu aporte llega directo a quienes más lo necesitan." },
-                ].map((item, i) => (
-                  <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                    <div style={{ background: "#0D4F3C", color: "white", width: 26, height: 26, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 12, flexShrink: 0 }}>{item.paso}</div>
-                    <div>
-                      <div style={{ fontWeight: 700, color: "#111827", fontSize: 13, marginBottom: 2 }}>{item.icon} {item.titulo}</div>
-                      <div style={{ color: "#6B7280", fontSize: 12, lineHeight: 1.5 }}>{item.desc}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {/* CTA 1: QUIERO DONAR */}
+          <a href="#" onClick={e => { e.preventDefault(); setShowDonacion(true) }}
+            style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 180, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", cursor: "pointer" }}>
+            <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?w=600&q=80" alt="Quiero donar" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(13,79,60,0.88) 0%, rgba(13,79,60,0.5) 60%, transparent 100%)" }} />
+            <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 24px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
+              <div style={{ fontSize: 28 }}>🚚</div>
+              <div style={{ fontWeight: 900, color: "white", fontSize: 20, lineHeight: 1.2 }}>Quiero donar</div>
+              <div style={{ color: "#86EFAC", fontSize: 13, fontWeight: 600 }}>Encontrá dónde llevar tu ayuda cerca tuyo</div>
             </div>
+            <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 10, padding: "8px 12px", color: "white", fontSize: 18, fontWeight: 700 }}>→</div>
+          </a>
+
+          {/* CTA 2: QUIERO SER VOLUNTARIO */}
+          <a href="#" onClick={e => { e.preventDefault(); setShowUnite(true) }}
+            style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 180, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", cursor: "pointer" }}>
+            <img src="https://raw.githubusercontent.com/emiliotv-ia/agentes-de-cambio/main/public/voluntarios.png" alt="Quiero ser voluntario" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(13,79,60,0.88) 0%, rgba(13,79,60,0.5) 60%, transparent 100%)" }} />
+            <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 24px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
+              <div style={{ fontSize: 28 }}>💚</div>
+              <div style={{ fontWeight: 900, color: "white", fontSize: 20, lineHeight: 1.2 }}>Quiero ser voluntario</div>
+              <div style={{ color: "#86EFAC", fontSize: 13, fontWeight: 600 }}>Sumate a las organizaciones que te necesitan</div>
+            </div>
+            <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 10, padding: "8px 12px", color: "white", fontSize: 18, fontWeight: 700 }}>→</div>
+          </a>
+
+          {/* CTA 3: TENGO UNA INSTITUCIÓN */}
+          <a href="/registrar"
+            style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 180, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", cursor: "pointer" }}>
+            <img src="https://images.unsplash.com/photo-1593113616828-6f22bca04804?w=600&q=80" alt="Tengo una institución" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(13,79,60,0.88) 0%, rgba(13,79,60,0.5) 60%, transparent 100%)" }} />
+            <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 24px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
+              <div style={{ fontSize: 28 }}>🏢</div>
+              <div style={{ fontWeight: 900, color: "white", fontSize: 20, lineHeight: 1.2 }}>Tengo una institución</div>
+              <div style={{ color: "#86EFAC", fontSize: 13, fontWeight: 600 }}>Registrá tu ONG y aparecé en el mapa — gratis</div>
+            </div>
+            <div style={{ position: "absolute", right: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 10, padding: "8px 12px", color: "white", fontSize: 18, fontWeight: 700 }}>→</div>
+          </a>
+        </div>
+
+        {/* ACCIONES SECUNDARIAS */}
+        <div style={{ marginTop: 20, background: "white", borderRadius: 16, padding: "16px 20px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", border: "1px solid #E5E7EB" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#9CA3AF", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12 }}>También podés…</div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+            <a href="/mapa" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>🗺️ Ver el mapa</a>
+            <a href="/calendario" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>📅 Calendario solidario</a>
+            <a href="/mapa" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>⭐ Dejá tu reseña</a>
+            <a href="/mapa?lista=true" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>🔍 Filtrar por tema</a>
+            <button onClick={() => setShowEvento(true)} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>➕ Publicar evento</button>
           </div>
-
-          {/* MODAL CÓMO FUNCIONA - mobile */}
-          {showComoFunciona && (
-            <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", display: "flex", alignItems: "flex-end", justifyContent: "center", zIndex: 1000, padding: 16 }}>
-              <div style={{ background: "white", borderRadius: 16, padding: "24px 24px 32px", width: "100%", maxWidth: 500, boxShadow: "0 -8px 30px rgba(0,0,0,0.2)" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-                  <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
-                  <h3 style={{ fontSize: 18, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Cómo funciona?</h3>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 20 }}>
-                  {[
-                    { paso: "1", icon: "🗺️", titulo: "Encontrá una institución", desc: "Buscá en el mapa o filtrá por categoría." },
-                    { paso: "2", icon: "🚚", titulo: "Registrá tu donación", desc: "Describí qué tenés para ofrecer y dejá tus datos." },
-                    { paso: "3", icon: "📧", titulo: "La institución te contacta", desc: "Se ponen en contacto para coordinar. ¡Así de simple!" },
-                    { paso: "4", icon: "💚", titulo: "El impacto es real", desc: "Tu aporte llega directo a quienes más lo necesitan." },
-                  ].map((item, i) => (
-                    <div key={i} style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                      <div style={{ background: "#0D4F3C", color: "white", width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: 13, flexShrink: 0 }}>{item.paso}</div>
-                      <div>
-                        <div style={{ fontWeight: 700, color: "#111827", fontSize: 14, marginBottom: 2 }}>{item.icon} {item.titulo}</div>
-                        <div style={{ color: "#6B7280", fontSize: 13, lineHeight: 1.5 }}>{item.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ display: "flex", gap: 10 }}>
-                  <a href="/mapa" style={{ flex: 1, background: "#0D4F3C", color: "white", padding: "13px", borderRadius: 10, fontWeight: 700, fontSize: 14, textDecoration: "none", textAlign: "center" }}>Ir al mapa →</a>
-                  <button onClick={() => setShowComoFunciona(false)} style={{ flex: 1, background: "#F3F4F6", color: "#374151", border: "none", padding: "13px", borderRadius: 10, fontWeight: 700, fontSize: 14, cursor: "pointer" }}>Cerrar</button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* CARD 2: FILTRÁ POR TEMA */}
-          <div style={{ position: "relative" }}
-            onMouseEnter={e => { const p = e.currentTarget.querySelector('.filtrar-panel'); if(p) p.style.opacity = '1'; if(p) p.style.pointerEvents = 'auto'; }}
-            onMouseLeave={e => { const p = e.currentTarget.querySelector('.filtrar-panel'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
-          >
-            <a href="/mapa?lista=true"
-              onClick={e => { e.preventDefault(); setShowFiltrarInfo(true) }}
-              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
-              <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=600&q=80" alt="Filtrá por tema" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
-              <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
-                <div style={{ fontSize: 24 }}>🔍</div>
-                <div style={{ fontWeight: 800, color: "white", fontSize: 17 }}>Filtrá por tema</div>
-                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Niños, animales, salud, educación y más</div>
-              </div>
-              <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
-            </a>
-            <div className="filtrar-panel" style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, opacity: 0, pointerEvents: "none", transition: "opacity 0.2s ease" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
-                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>🔍 Filtrá por tema</h3>
-              </div>
-              <p style={{ color: "#4B5563", fontSize: 13, lineHeight: 1.6, margin: "0 0 14px 0" }}>Con esta función verás todos los tipos de instituciones que hay en el mapa, así podés filtrar cuál o cuáles son de tu interés.</p>
-              <a href="/mapa?lista=true" style={{ display: "inline-block", background: "#0D4F3C", color: "white", padding: "8px 16px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>Ver categorías →</a>
-            </div>
-          </div>
-
-          {/* MODAL FILTRÁ POR TEMA - mobile */}
-          <ModalInfo
-            show={showFiltrarInfo}
-            onClose={() => setShowFiltrarInfo(false)}
-            titulo="🔍 Filtrá por tema"
-            texto="Con esta función verás todos los tipos de instituciones que hay en el mapa, así podés filtrar cuál o cuáles son de tu interés."
-            linkLabel="Ver categorías"
-            linkHref="/mapa?lista=true"
-          />
-
-          {/* CARD 3: DONACIÓN */}
-          {cards.slice(0, 1).map((item, i) => (
-            <a key={i} href={item.link || "#"}
-              onClick={item.accion ? (e) => handleCardClick(item, e) : undefined}
-              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", cursor: "pointer" }}>
-              <img src={item.img} alt={item.titulo} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
-              <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
-                <div style={{ fontSize: 24 }}>{item.icon}</div>
-                <div style={{ fontWeight: 800, color: "white", fontSize: 17, lineHeight: 1.2 }}>{item.titulo}</div>
-                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>{item.desc}</div>
-              </div>
-              <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
-            </a>
-          ))}
-
-          {/* CARD 4: DEJÁ TU RESEÑA */}
-          <div style={{ position: "relative" }}
-            onMouseEnter={e => { const p = e.currentTarget.querySelector('.resena-panel'); if(p) p.style.opacity = '1'; if(p) p.style.pointerEvents = 'auto'; }}
-            onMouseLeave={e => { const p = e.currentTarget.querySelector('.resena-panel'); if(p) p.style.opacity = '0'; if(p) p.style.pointerEvents = 'none'; }}
-          >
-            <a href="/mapa"
-              onClick={e => { e.preventDefault(); setShowResenaInfo(true) }}
-              style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)" }}>
-              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&q=80" alt="Dejá tu reseña" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
-              <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
-                <div style={{ fontSize: 24 }}>⭐</div>
-                <div style={{ fontWeight: 800, color: "white", fontSize: 17 }}>Dejá tu reseña</div>
-                <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Ayudá a otros a elegir dónde ayudar</div>
-                <div style={{ display: "flex", gap: 2, marginTop: 2 }}>{[1,2,3,4,5].map(n => <span key={n} style={{ fontSize: 14 }}>⭐</span>)}</div>
-              </div>
-              <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
-            </a>
-            <div className="resena-panel" style={{ position: "absolute", top: "calc(100% + 8px)", left: 0, right: 0, background: "white", borderRadius: 16, padding: "20px 24px", boxShadow: "0 8px 30px rgba(0,0,0,0.15)", zIndex: 100, opacity: 0, pointerEvents: "none", transition: "opacity 0.2s ease" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                <div style={{ width: 4, height: 22, background: "#0D4F3C", borderRadius: 4 }} />
-                <h3 style={{ fontSize: 16, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>⭐ Dejá tu reseña</h3>
-              </div>
-              <p style={{ color: "#4B5563", fontSize: 13, lineHeight: 1.6, margin: "0 0 14px 0" }}>Buscá en el mapa la institución que conocés, y haciendo click en ella, podrás contarnos tu reseña y experiencia con ellos.</p>
-              <a href="/mapa" style={{ display: "inline-block", background: "#0D4F3C", color: "white", padding: "8px 16px", borderRadius: 8, fontSize: 13, fontWeight: 700, textDecoration: "none" }}>Ir al mapa →</a>
-            </div>
-          </div>
-
-          {/* MODAL RESEÑA - mobile */}
-          <ModalInfo
-            show={showResenaInfo}
-            onClose={() => setShowResenaInfo(false)}
-            titulo="⭐ Dejá tu reseña"
-            texto="Buscá en el mapa la institución que conocés, y haciendo click en ella, podrás contarnos tu reseña y experiencia con ellos."
-            linkLabel="Ir al mapa"
-            linkHref="/mapa"
-          />
-
-          {/* RESTO DE CARDS (Registrá institución, Calendario, Postulate) */}
-          {cards.slice(1).map((item, i) => {
-            const isPostulate = item.accion === "postulate"
-            const isCalendario = item.extraBtn
-            return (
-              <a key={i} href={item.link || "#"}
-                onClick={item.accion ? (e) => handleCardClick(item, e) : undefined}
-                style={{ borderRadius: 16, overflow: "hidden", textDecoration: "none", display: "block", position: "relative", height: isPostulate ? 220 : 160, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", cursor: "pointer" }}>
-                <img src={item.img} alt={item.titulo} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: isPostulate ? "center top" : "center", display: "block" }} />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)" }} />
-                <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, padding: "0 20px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 4 }}>
-                  <div style={{ fontSize: 24 }}>{item.icon}</div>
-                  <div style={{ fontWeight: 800, color: "white", fontSize: 17, lineHeight: 1.2 }}>{item.titulo}</div>
-                  <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>{item.desc}</div>
-                  {isCalendario && (
-                    <button onClick={e => { e.preventDefault(); e.stopPropagation(); setShowEvento(true) }}
-                      style={{ marginTop: 6, background: "rgba(255,255,255,0.2)", color: "white", border: "1.5px solid rgba(255,255,255,0.5)", padding: "6px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: "pointer", alignSelf: "flex-start" }}>
-                      + Publicar evento
-                    </button>
-                  )}
-                </div>
-                <div style={{ position: "absolute", right: 16, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.2)", borderRadius: 8, padding: "6px 10px", color: "white", fontSize: 16, fontWeight: 700 }}>→</div>
-              </a>
-            )
-          })}
         </div>
       </div>
 
