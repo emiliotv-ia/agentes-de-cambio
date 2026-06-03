@@ -57,7 +57,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", background: "#F8FAF9", minHeight: "100vh" }}>
+    <div style={{ fontFamily: "system-ui, sans-serif", minHeight: "100vh", backgroundImage: "url('/agentesDcbio_Fondo.jpeg')", backgroundRepeat: "repeat", backgroundSize: "auto", backgroundAttachment: "fixed" }}>
 
       {/* HERO */}
       <div style={{ position: "relative", color: "white", overflow: "hidden" }}>
@@ -76,7 +76,7 @@ export default function LandingPage() {
       </div>
 
       {/* ── SECCIÓN PRINCIPAL: ¿Cómo querés ayudar? ── */}
-      <div style={{ maxWidth: 700, margin: "0 auto", padding: "44px 24px 0" }}>
+      <div style={{ maxWidth: 700, margin: "0 auto", padding: "44px 24px 0", paddingBottom: 60 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
           <div style={{ width: 4, height: 32, background: "#0D4F3C", borderRadius: 4 }} />
           <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0D4F3C", margin: 0 }}>¿Cómo querés ayudar?</h2>
@@ -126,14 +126,45 @@ export default function LandingPage() {
         </div>
 
         {/* ACCIONES SECUNDARIAS */}
-        <div style={{ marginTop: 20, background: "white", borderRadius: 16, padding: "16px 20px", boxShadow: "0 2px 8px rgba(0,0,0,0.06)", border: "1px solid #E5E7EB" }}>
-          <div style={{ fontSize: 11, fontWeight: 700, color: "#9CA3AF", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12 }}>También podés…</div>
+        <div style={{ marginTop: 20, background: "rgba(255,255,255,0.85)", backdropFilter: "blur(6px)", borderRadius: 16, padding: "16px 20px", boxShadow: "0 2px 8px rgba(0,0,0,0.10)", border: "1px solid rgba(255,255,255,0.6)" }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#6B7280", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12 }}>También podés…</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-            <a href="/mapa" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>🗺️ Ver el mapa</a>
-            <a href="/calendario" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>📅 Calendario solidario</a>
-            <a href="/mapa" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>⭐ Dejá tu reseña</a>
-            <a href="/mapa?lista=true" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, textDecoration: "none" }}>🔍 Filtrar por tema</a>
-            <button onClick={() => setShowEvento(true)} style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#F0FDF4", border: "1.5px solid #BBF7D0", color: "#065F46", borderRadius: 10, padding: "9px 14px", fontSize: 13, fontWeight: 700, cursor: "pointer" }}>➕ Publicar evento</button>
+
+            {/* Mapa */}
+            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", minWidth: 0 }}>
+              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
+              <span style={{ position: "relative", zIndex: 1 }}>🗺️ Ver el mapa</span>
+            </a>
+
+            {/* Calendario */}
+            <a href="/calendario" style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", minWidth: 0 }}>
+              <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
+              <span style={{ position: "relative", zIndex: 1 }}>📅 Calendario solidario</span>
+            </a>
+
+            {/* Reseña */}
+            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", minWidth: 0 }}>
+              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
+              <span style={{ position: "relative", zIndex: 1 }}>⭐ Dejá tu reseña</span>
+            </a>
+
+            {/* Filtrar */}
+            <a href="/mapa?lista=true" style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", minWidth: 0 }}>
+              <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
+              <span style={{ position: "relative", zIndex: 1 }}>🔍 Filtrar por tema</span>
+            </a>
+
+            {/* Publicar evento */}
+            <button onClick={() => setShowEvento(true)} style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, color: "white", border: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", cursor: "pointer", minWidth: 0 }}>
+              <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+              <div style={{ position: "absolute", inset: 0, background: "rgba(26,60,40,0.75)" }} />
+              <span style={{ position: "relative", zIndex: 1 }}>➕ Publicar evento</span>
+            </button>
+
           </div>
         </div>
       </div>
