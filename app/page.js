@@ -128,41 +128,41 @@ export default function LandingPage() {
         {/* ACCIONES SECUNDARIAS */}
         <div style={{ marginTop: 20, background: "rgba(255,255,255,0.85)", backdropFilter: "blur(6px)", borderRadius: 16, padding: "16px 20px", boxShadow: "0 2px 8px rgba(0,0,0,0.10)", border: "1px solid rgba(255,255,255,0.6)" }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#6B7280", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 12 }}>También podés…</div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
 
             {/* Mapa */}
-            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", minWidth: 0 }}>
-              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+              <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
               <span style={{ position: "relative", zIndex: 1 }}>🗺️ Ver el mapa</span>
             </a>
 
             {/* Calendario */}
-            <a href="/calendario" style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", minWidth: 0 }}>
-              <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+            <a href="/calendario" style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+              <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
               <span style={{ position: "relative", zIndex: 1 }}>📅 Calendario solidario</span>
             </a>
 
             {/* Reseña */}
-            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", minWidth: 0 }}>
-              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+            <a href="/mapa" style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+              <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
               <span style={{ position: "relative", zIndex: 1 }}>⭐ Dejá tu reseña</span>
             </a>
 
             {/* Filtrar */}
-            <a href="/mapa?lista=true" style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", minWidth: 0 }}>
-              <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+            <a href="/mapa?lista=true" style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, textDecoration: "none", color: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
+              <img src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "rgba(13,79,60,0.72)" }} />
               <span style={{ position: "relative", zIndex: 1 }}>🔍 Filtrar por tema</span>
             </a>
 
-            {/* Publicar evento */}
-            <button onClick={() => setShowEvento(true)} style={{ position: "relative", overflow: "hidden", display: "inline-flex", alignItems: "center", gap: 7, borderRadius: 10, padding: "9px 16px", fontSize: 13, fontWeight: 700, color: "white", border: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", cursor: "pointer", minWidth: 0 }}>
-              <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=300&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+            {/* Publicar evento — ocupa las 2 columnas */}
+            <button onClick={() => setShowEvento(true)} style={{ position: "relative", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", height: 60, borderRadius: 12, fontSize: 14, fontWeight: 700, color: "white", border: "none", boxShadow: "0 2px 8px rgba(0,0,0,0.25)", cursor: "pointer", gridColumn: "1 / -1" }}>
+              <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?w=400&q=70" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
               <div style={{ position: "absolute", inset: 0, background: "rgba(26,60,40,0.75)" }} />
-              <span style={{ position: "relative", zIndex: 1 }}>➕ Publicar evento</span>
+              <span style={{ position: "relative", zIndex: 1 }}>➕ Publicar evento solidario</span>
             </button>
 
           </div>
