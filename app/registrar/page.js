@@ -30,7 +30,7 @@ export default function RegistrarPage() {
   const [subiendo, setSubiendo] = useState(false)
   const [form, setForm] = useState({
     nombre: "", direccion: "", localidad: "", latitud: "", longitud: "",
-    nombre_encargado: "", telefono1: "", telefono2: "", whatsapp: "",
+    nombre_encargado: "", email_encargado: "", telefono1: "", telefono2: "", whatsapp: "",
     tiene_personeria_juridica: false, respaldo_legal: "",
     descripcion: "", historia: "", tipo_ayuda: [], necesidades: "", categorias: []
   })
@@ -240,6 +240,10 @@ export default function RegistrarPage() {
                 <div>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Nombre del encargado/director *</label>
                   <input required value={form.nombre_encargado} onChange={e => update('nombre_encargado', e.target.value)} placeholder="Nombre y apellido" style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, boxSizing: "border-box" }} />
+                </div>
+                <div>
+                  <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Email del encargado</label>
+                  <input type="email" value={form.email_encargado} onChange={e => update('email_encargado', e.target.value)} placeholder="ejemplo@gmail.com" style={{ width: "100%", padding: "10px 12px", borderRadius: 8, border: "1px solid #E5E7EB", fontSize: 14, boxSizing: "border-box" }} />
                 </div>
                 <div>
                   <label style={{ fontSize: 13, fontWeight: 600, color: "#374151", display: "block", marginBottom: 6 }}>Teléfono 1 *</label>
