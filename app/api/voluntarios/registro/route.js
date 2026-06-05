@@ -38,7 +38,7 @@ export async function POST(request) {
     // Email al admin
     try {
       await resend.emails.send({
-        from: 'Agentes de Cambio <onboarding@resend.dev>',
+        from: 'Agentes de Cambio <noreply@agentesdecambio.com.ar>',
         to: 'agentesdecambiochaco@gmail.com',
         subject: '🤝 Nuevo voluntario registrado',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
@@ -61,7 +61,7 @@ export async function POST(request) {
     // Email de bienvenida al voluntario
     try {
       await resend.emails.send({
-        from: 'Agentes de Cambio <onboarding@resend.dev>',
+        from: 'Agentes de Cambio <noreply@agentesdecambio.com.ar>',
         to: email,
         subject: '💚 ¡Bienvenido a Agentes de Cambio!',
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
