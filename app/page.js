@@ -203,7 +203,7 @@ export default function LandingPage() {
                   try {
                     const res = await fetch('/api/agentes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(agenteData) })
                     const data = await res.json()
-                    if (data.success) { alert("✅ ¡Bienvenido " + agenteData.nombre + "! Ya sos un Agente de Cambio."); setShowUnite(false); setAgenteData({ nombre: "", email: "", telefono: "", localidad: "", motivacion: "" }) }
+                    if (data.success) { alert("✅ ¡Gracias " + agenteData.nombre + "! Tu postulación fue enviada. Nos comunicaremos con vos a la brevedad."); setShowUnite(false); setAgenteData({ nombre: "", email: "", telefono: "", localidad: "", motivacion: "" }) }
                     else alert("❌ Error: " + data.error)
                   } catch (err) { alert("❌ Error: " + err.message) }
                   finally { setEnviando(false) }
