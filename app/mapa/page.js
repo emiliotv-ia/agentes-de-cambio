@@ -275,7 +275,8 @@ export default function DondeSumo() {
   const [showModal, setShowModal] = useState(false)
   const [showVoluntarioModal, setShowVoluntarioModal] = useState(false)
   const [voluntarioData, setVoluntarioData] = useState({ nombre: "", email: "", telefono: "", oferta: [], comentario: "", otros: "" })
-  const [instituciones, setInstituciones] = useState(INSTITUCIONES_MOCK)
+  const [instituciones, setInstituciones] = useState([])
+  const [loadingData, setLoadingData] = useState(true)
   const [showMenu, setShowMenu] = useState(false)
   const [showQuienesSomos, setShowQuienesSomos] = useState(false)
   const [showMensaje, setShowMensaje] = useState(false)
@@ -298,22 +299,33 @@ export default function DondeSumo() {
   }, [])
 
   useEffect(() => {
-    fetch('/api/instituciones/search')
+    fetch('/api/instituciones/search', { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
-        if (data.success && data.instituciones.length > 0) {
-          const adapted = data.instituciones.map(i => ({
-            ...i,
-            lat: parseFloat(i.latitud),
-            lng: parseFloat(i.longitud),
-            categorias: i.categorias || [],
-            tags: i.tags || [],
-            necesidades: Array.isArray(i.necesidades_actuales) ? i.necesidades_actuales : (i.necesidades_actuales ? [i.necesidades_actuales] : [])
-          }))
+        if (data.success) {
+          const adapted = data.instituciones
+            .filter(i => i.latitud && i.longitud && !isNaN(parseFloat(i.latitud)) && !isNaN(parseFloat(i.longitud)))
+            .map(i => ({
+              ...i,
+              lat: parseFloat(i.latitud),
+              lng: parseFloat(i.longitud),
+              categorias: i.categorias || [],
+              tags: i.tags || [],
+              necesidades: Array.isArray(i.necesidades_actuales)
+                ? i.necesidades_actuales
+                : (i.necesidades_actuales ? [i.necesidades_actuales] : [])
+            }))
           setInstituciones(adapted)
+        } else {
+          console.error('API instituciones error:', data.error)
+          setInstituciones(INSTITUCIONES_MOCK)
         }
       })
-      .catch(() => {})
+      .catch(err => {
+        console.error('Fetch instituciones failed:', err)
+        setInstituciones(INSTITUCIONES_MOCK)
+      })
+      .finally(() => setLoadingData(false))
   }, [])
 
   const filtered = useMemo(() => {
@@ -331,7 +343,7 @@ export default function DondeSumo() {
     })
   }, [searchTerm, selectedCats, selectedLocalidad, instituciones])
 
-  const localidades = useMemo(() => [...new Set(INSTITUCIONES_MOCK.map(i => i.localidad))].sort(), [])
+  const localidades = useMemo(() => [...new Set(instituciones.map(i => i.localidad).filter(Boolean))].sort(), [instituciones])
 
   const loadLeaflet = useCallback(() => {
     if (leafletLoaded.current) return Promise.resolve()
@@ -461,7 +473,10 @@ export default function DondeSumo() {
       </header>
 
       <div style={{ background: "white", padding: "8px 20px", borderBottom: "1px solid #E5E7EB", display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 13, flexShrink: 0 }}>
-        <span style={{ color: "#6B7280" }}><strong style={{ color: "#0D4F3C" }}>{filtered.length}</strong> lugar{filtered.length !== 1 ? "es" : ""} encontrado{filtered.length !== 1 ? "s" : ""}</span>
+        {loadingData
+          ? <span style={{ color: "#9CA3AF" }}>Cargando instituciones...</span>
+          : <span style={{ color: "#6B7280" }}><strong style={{ color: "#0D4F3C" }}>{filtered.length}</strong> lugar{filtered.length !== 1 ? "es" : ""} encontrado{filtered.length !== 1 ? "s" : ""}</span>
+        }
         <span style={{ fontSize: 11, color: "#9CA3AF" }}>{filtered.filter(i => i.estado_verificacion === "verificada").length} verificados ✓</span>
       </div>
 
