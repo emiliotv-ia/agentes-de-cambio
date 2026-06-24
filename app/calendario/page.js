@@ -12,7 +12,7 @@ export default function CalendarioPage() {
     fetch('/api/eventos')
       .then(r => r.json())
       .then(data => {
-        if (data.success) setEventos(data.eventos || [])
+        if (data.eventos) setEventos(data.eventos)
       })
       .catch(() => {})
       .finally(() => setLoading(false))
